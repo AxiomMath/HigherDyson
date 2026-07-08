@@ -1,0 +1,437 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\GG}{\mathcal{G}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\JJ}{\mathcal{J}}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{keyformula}{Key Formula}
+
+
+\begin{document}
+
+The companion paper (Alfes--Ono, \emph{Higher Dyson ranks and meromorphic elliptic
+corrections}) develops, for each $m\ge 2$ and $d:=2m+1$, a finite elliptic correction theory
+for the higher Dyson series $\RR_m$. The overall architecture, meromorphic Jacobi forms,
+Appell--Lerch kernels, weak-Maass and mock-modular background, the Deuring/CM and modular
+input---is either classical or is the kind of analytic bookkeeping (normal convergence on
+compacta, holomorphy of coefficients) that we take as established. What is genuinely new, and
+where a hidden sign, exponent, root-of-unity phase, or normalization error could enter
+unnoticed, is a short chain of \emph{algebraic} identities in $q$-series and rational functions.
+We isolate exactly those identities here and target them for machine verification. We do not
+attempt to formalize the paper as a whole.
+
+Two features make these identities formalizable. First, each is an identity of \emph{formal}
+objects: an equality in $\C(u)$, in a Laurent ring $\C((q))[u]$, or---after evaluating the
+elliptic variable at a fixed $\tau$---an equality of complex numbers. No analytic limit enters
+the statements themselves. Second, the ``modular'' or ``$q$-series'' inputs each identity needs
+can be introduced as opaque symbols subject only to the finitely many algebraic relations
+actually used (the two product $q$-shift laws, the theta triple-product shifts). We therefore
+introduce those symbols and relations directly, and phrase every Key Formula as a
+self-contained algebraic equality.
+
+Throughout, $m\ge 2$ is an integer and $d:=2m+1$ (so $d\ge 5$ is odd and $d-3=2m-2$ is even and
+$\ge 2$). We fix $x\in\C^\times$, and when a root of unity is needed we write $\omega:=e^{2\pi i/d}$.
+The tags in brackets name the corresponding statement in the paper.
+
+%==============================================================================
+\section*{Formalization conventions}
+%==============================================================================
+
+These conventions are part of the specification: they fix how the objects are to be modeled,
+and any formalization that departs from them is proving a different statement. They do not
+weaken any Key Formula.
+
+\begin{enumerate}
+\item[(C1)] \textbf{Opaque symbols, not series.} The objects
+$G_d,\,M_d,\,P_d,\,X_j^{(m)},\,\FF_x,\,\GG_{d,x},\,K_{d,x},\,\Phi_{d,x},\,\mathcal H_{d,x}$
+and the correction kernels
+$\Psi_d^{[x]},\,\Omega_{d,r}^{[x]},\,\Omega_{d,\mathrm{ext}}^{[x]},\,
+\mathcal B_d^{[x]},\,\mathcal A_{d,r}^{[x]},\,\mathcal A_{d,\mathrm{ext}}^{[x]}$
+are \emph{opaque parameters} (functions to $\C$, with arguments in $\C$ or $\C^\times$).
+They must \emph{not} be defined by infinite sums, products, or \texttt{tsum}. Their only
+permitted properties are the finitely many algebraic relations written for them below---the
+$G_d$ shift, the $M_d$ and $P_d$ multiplicative $q$-shift laws, the kernel $q$-shift and
+$\tau$-shift laws, and the $\vartheta_1$ triple-product normalization and quasi-periodicities.
+Each such relation is introduced as a \emph{hypothesis} of the statement that uses it. No
+summability or convergence claim is ever a proof obligation; where a kernel is manipulated,
+its shift law is the hypothesis that licenses it.
+
+\item[(C2)] \textbf{Units.} Every symbol that is inverted or raised to a negative power is a
+unit: take $x\in\C^\times$ (equivalently $x\ne0$) and $u\in\C^\times$ throughout. In
+particular the hypothesis ``$x^d\ne1$'' does not license $x^{-1}$ on its own; carry $x\ne0$
+(or $x\in\C^\times$) explicitly wherever $x^{-1}$ or $x^{-d}$ appears.
+
+\item[(C3)] \textbf{Global setup carried everywhere.} Fix once $d:=2m+1$ with $m\ge2$ an
+integer, and phrase every statement in terms of $m$ (so $d\ge5$ odd, $d-3=2m-2\ge2$ even).
+This hypothesis travels with every Key Formula.
+
+\item[(C4)] \textbf{Pinned constants (do not re-derive).} The following normalizations are
+fixed data, to be taken as named givens rather than recomputed:
+\[
+\text{$1/u$ partial-fraction coefficient}=-X_0^{(m)}(x;q)=T_{d,x}(0;q)=R_{d,x}(0;q);
+\]
+\[
+\vartheta_1(\tau,z+\tau)=-q^{-1/2}u^{-1}\vartheta_1(\tau,z)
+\quad(\text{half-integer power }-\tfrac12,\ \text{not }-1);
+\]
+\[
+\vartheta_1(\tau,z)=iq^{1/8}u^{-1/2}J(u;q),
+\qquad
+\eta(\tau)=q^{1/24}(q;q)_\infty
+\ \Rightarrow\ \eta(\tau)^{24}=q\,(q;q)_\infty^{24};
+\]
+and in the level-$5$ carrier the scalar prefactor is $q^{1/4}$ (from
+$q^{(m+1)/12}=q^{3/12}=q^{1/4}$ at $m=2$).
+
+\item[(C5)] \textbf{Rational-function reading.} Identities among rational functions of $u$
+(Key Formulas~\ref{KF:functional},~\ref{KF:defect},~\ref{KF:residues},~\ref{KF:kernelshift})
+are equalities in the field $\C(u)$ (equivalently, equalities of numerators after clearing
+the common denominator), not pointwise identities carrying side conditions. Statements in the
+elliptic variable (Key Formulas~\ref{KF:Pshift}--\ref{KF:carrier}) are equalities of the
+opaque functions under the stated shifts.
+
+\item[(C6)] \textbf{Statements are conclusions, not hypotheses.} Each Key Formula is the thing
+to be \emph{proved}. In particular Key Formula~\ref{KF:functional} is an existential:
+$\exists\,R_{d,x}\in q^{-1}\C[[q]][u]$ with $\deg_u R_{d,x}\le d-2$, $R_{d,x}(0;q)=-X_0^{(m)}(x;q)$,
+and the displayed functional equation. The recurrence, the constant-term value, the twist
+laws, and the decay/convergence facts may appear as \emph{hypotheses only} when the
+convention above designates them as opaque-symbol shift laws; they may never be assumed as
+stand-ins for the conclusion being proved.
+\end{enumerate}
+
+%==============================================================================
+\section*{Ground data and definitions}
+%==============================================================================
+
+\begin{defn}[The building-block quotient $G_d$ and its shift]\label{def:G}
+Work in the formal Laurent field $\C((q))$ with a marked unit $x\in\C^\times$. The object
+$G_d(x;q):=(x^dq^d;q^d)_\infty/(xq;q)_\infty$ enters only through the single algebraic relation
+it satisfies, which we take as its defining property:
+\[
+\frac{G_d(x;q)}{G_d(xq;q)}=\frac{1-x^dq^d}{1-xq}
+=\sum_{r=0}^{d-1}x^rq^r .
+\]
+Equivalently $G_d(x;q)=\bigl(\sum_{r=0}^{d-1}x^rq^r\bigr)\,G_d(xq;q)$, and more generally, for
+$n\ge0$,
+\[
+G_d(xq^n;q)=\Bigl(\sum_{r=0}^{d-1}x^rq^{r(n+1)}\Bigr)G_d(xq^{n+1};q).
+\]
+\end{defn}
+
+\begin{defn}[Deformed higher Dyson values and their generating series]\label{def:X}
+For $j\in\Z$ set
+\[
+X_j:=X_j^{(m)}(x;q):=\sum_{n\ge0}q^{n^2+jn}G_d(xq^n;q).
+\]
+\emph{Power-series constraint (essential).} Because the sum runs over $n\ge0$ with exponents
+$n^2+jn$ bounded below, and $G_d(xq^n;q)$ is itself a power series in $q$, each $X_j$ is a
+genuine \emph{power series} in $q$: $X_j\in\C[[q]]$ (nonnegative powers of $q$ only), and in
+particular $X_0\in\C[[q]]$. This is a defining property of the $X_j$, \textbf{not} a derived
+one: the objects must be typed as elements of $\C[[q]]$ (equivalently, carry the hypothesis
+$X_j\in\C[[q]]$ for every $j$ used), \emph{not} as arbitrary two-sided elements of $\C((q))$.
+Every negative power of $q$ in the construction originates from the single term $q^{-1}X_0$ in
+the boundary closure (Key Formula~\ref{KF:boundary}), which is why $R_{d,x}\in q^{-1}\C[[q]][u]$
+carries exactly one order of pole in $q$; without the constraint $X_0\in\C[[q]]$ the functional
+equation (Key Formula~\ref{KF:functional}) is \emph{false} (e.g.\ $X_0=q^{-1}$ forces
+$q\cdot X_0=q^{-1}\notin\C[[q]]$, so no valid $R_{d,x}$ exists). Then
+\[
+\FF_x(t):=\sum_{j\ge0}X_j\,t^j,
+\qquad
+\GG(u):=\GG_{d,x}(u;q):=x^{-2}\FF_x(xu).
+\]
+Write $G:=G_d(x;q)$ and $C_x:=\sum_{r=0}^{d-1}x^r=\dfrac{1-x^d}{1-x}$ (for $x\ne1$).
+\end{defn}
+
+\begin{defn}[The two normalizing products and their $q$-shifts]\label{def:MP}
+Let $J(u;q):=(u;q)_\infty(q/u;q)_\infty(q;q)_\infty$ be the Jacobi triple product. Set
+\[
+M_d(u;q):=\frac{(u^d;q^d)_\infty}{(u;q)_\infty\,J(u;q)^{\,d-3}},
+\qquad
+P_d(u;q):=u^{-m-1}J(-u;q)^{\,d+1}\frac{(q/u;q)_\infty}{(q^d/u^d;q^d)_\infty}.
+\]
+These enter the algebra \emph{only} through their multiplicative $q$-shift laws, which we take
+as defining relations:
+\[
+M_d(qu;q)=\frac{u^{d-3}(1-u)}{1-u^d}\,M_d(u;q),
+\qquad
+P_d(qu;q)=q^{-m-1}u^{-2}\,\frac{1-u}{1-u^d}\,P_d(u;q).
+\]
+The normalized generating series is $K_{d,x}(u;q):=\dfrac{M_d(u;q)}{u}\,\GG_{d,x}(u;q)$.
+\end{defn}
+
+\begin{defn}[The defect polynomial and its clearing]\label{def:RT}
+$R_{d,x}(u;q)\in q^{-1}\C[[q]][u]$ is the polynomial of degree $\le d-2$ produced in
+Key Formula~\ref{KF:functional}; define
+\[
+T_{d,x}(u;q):=(1-xu)(1-u)R_{d,x}(u;q)-C_x\,u^{d-1}(1-u)\,G_d(x;q),
+\]
+a polynomial in $u$ of degree $\le d$.
+\end{defn}
+
+\begin{defn}[Correction kernels and Appell-type sums]\label{def:kernels}
+For $u=e^{2\pi i w}$ set (rational-function level)
+\[
+\Psi_d^{[x]}(u):=\sum_{n\ge0}x^{-2n-2}\frac{q^{-n}M_d(q^nu;q)}{u},
+\quad
+\Omega_{d,r}^{[x]}(u):=\sum_{n\ge0}\frac{x^{-2n-2}M_d(q^nu;q)}{1-\omega^rq^nu},
+\quad
+\Omega_{d,\mathrm{ext}}^{[x]}(u):=\sum_{n\ge0}\frac{x^{-2n-2}M_d(q^nu;q)}{1-xq^nu},
+\]
+and (elliptic-variable level, with $u=e^{2\pi i w}$)
+\[
+\mathcal B_d^{[x]}:=\sum_{n\ge0}x^{-2n-2}q^{mn^2}u^{2mn}P_d(q^nu;q),
+\qquad
+\mathcal A_{d,r}^{[x]}:=\sum_{n\ge0}x^{-2n-2}q^{mn^2+n}u^{2mn+1}\frac{P_d(q^nu;q)}{1-\omega^rq^nu},
+\]
+and $\mathcal A_{d,\mathrm{ext}}^{[x]}$ likewise with $1-\omega^rq^nu$ replaced by $1-xq^nu$.
+(Only the $q$-shift laws below are needed; convergence is assumed.)
+\end{defn}
+
+\begin{defn}[Theta data for the carrier]\label{def:theta}
+Let $\eta,\vartheta_1$ be Dedekind's eta and the odd Jacobi theta function. On the relevant
+congruence subgroup $\Gamma(24d^2)$ they enter only through the quasi-periodicity relations
+\[
+\vartheta_1(\tau,z+1)=-\vartheta_1(\tau,z),
+\qquad
+\vartheta_1(\tau,z+\tau)=-q^{-1/2}u^{-1}\vartheta_1(\tau,z),
+\]
+(and the $d$-scaled versions with $\tau\mapsto d\tau$, $z\mapsto dz$, $u\mapsto u^d$, $q\mapsto q^d$),
+together with the triple-product normalization $\vartheta_1(\tau,z)=iq^{1/8}u^{-1/2}J(u;q)$.
+The Jacobi carrier is
+\[
+\JJ_{m,d}(\tau,z):=\eta(\tau)^{\,2-4m}\,\frac{\vartheta_1(\tau,z)^{\,4m+1}}{\vartheta_1(d\tau,dz)}.
+\]
+\end{defn}
+
+%==============================================================================
+\section*{The key identities}
+%==============================================================================
+
+\begin{keyformula}[Root-of-unity collapse of the inhomogeneity]\label{KF:collapse}
+With $C_x=\sum_{r=0}^{d-1}x^r$, if $x^d=1$ but $x\ne1$ then
+\[
+C_x=\frac{1-x^d}{1-x}=0 .
+\]
+Consequently the inhomogeneous term $C_x\,G_d(x;q)$ of the recurrence
+(Key Formula~\ref{KF:recurrence}) vanishes at every nontrivial $d$-th root of unity.
+\end{keyformula}
+
+\begin{keyformula}[The fundamental $(2m+1)$-term recurrence; Prop.~2.2, eq.~(2.1)]\label{KF:recurrence}
+For every $j\in\Z$,
+\[
+\sum_{r=0}^{d-1}x^r\,X_{j+r-2}^{(m)}(x;q)\;-\;q^{\,j-1}X_j^{(m)}(x;q)
+\;=\;\Bigl(\sum_{r=0}^{d-1}x^r\Bigr)G_d(x;q).
+\]
+The verification is the exponent identity
+\[
+n^2+(j+r)n+r=(n+1)^2+(j+r-2)(n+1)+(1-j),
+\]
+combined with the shift $G_d(xq^n;q)=\bigl(\sum_r x^rq^{r(n+1)}\bigr)G_d(xq^{n+1};q)$ of
+Definition~\ref{def:G} and reindexing $N=n+1$, where the missing $N=0$ term contributes
+exactly $-G_d(x;q)$ per summand.
+\end{keyformula}
+
+\begin{keyformula}[The two negative-index boundary closures; eqs.~(4.5),(4.6)]\label{KF:boundary}
+Specializing Key Formula~\ref{KF:recurrence} at $j=1$ and $j=0$ and eliminating gives
+\[
+X_{-1}=C_xG-\sum_{r=1}^{d-1}x^rX_{r-1}+X_1,
+\qquad
+X_{-2}=q^{-1}X_0-xX_1+x^dX_{d-2}+(1-x)C_xG .
+\]
+These are the only closures needed to sum the recurrence over $j\ge0$.
+\end{keyformula}
+
+\begin{keyformula}[The master functional equation and the constant term of $R_{d,x}$; Thm.~4.1, eqs.~(1.8),(4.1)]\label{KF:functional}
+Assume the power-series constraint of Definition~\ref{def:X}: $X_j^{(m)}(x;q)\in\C[[q]]$ for
+every $j$ (in particular $X_0^{(m)}(x;q)\in\C[[q]]$). This hypothesis is required---without it
+the statement is false. Then there is a unique $R_{d,x}(u;q)\in q^{-1}\C[[q]][u]$ of degree
+$\le d-2$ with
+\[
+\GG_{d,x}(qu;q)
+=x^2q\,\frac{u^d-1}{u^{d-3}(u-1)}\,\GG_{d,x}(u;q)
++\frac{q}{u^{d-3}}\,R_{d,x}(u;q)
+-C_x\,q\,\frac{u^2}{1-xu}\,G_d(x;q),
+\]
+and moreover $R_{d,x}(0;q)=-X_0^{(m)}(x;q)$. The two rational-function reductions that produce
+this form are
+\[
+\sum_{r=0}^{d-1}u^{2-r}=\frac{u^d-1}{u^{d-3}(u-1)},
+\qquad
+1+xu-\frac{1}{1-xu}=-\frac{x^2u^2}{1-xu}.
+\]
+\end{keyformula}
+
+\begin{keyformula}[$M_d$-clearing to the twisted defect equation; eqs.~(4.10),(4.3)]\label{KF:defect}
+Using the $M_d$ shift of Definition~\ref{def:MP} to multiply the master equation by
+$M_d(qu;q)/(qu)$, the homogeneous coefficient collapses,
+\[
+\frac{M_d(qu;q)}{u}\cdot x^2q\,\frac{u^d-1}{u^{d-3}(u-1)}=x^2\,\frac{M_d(u;q)}{u},
+\]
+and the whole identity becomes, with $T_{d,x}$ as in Definition~\ref{def:RT},
+\[
+K_{d,x}(qu;q)-x^2K_{d,x}(u;q)
+=\frac{M_d(u;q)}{u(1-u^d)(1-xu)}\,T_{d,x}(u;q).
+\]
+\end{keyformula}
+
+\begin{keyformula}[Explicit partial-fraction residues; Thm.~4.3, eqs.~(4.18),(4.19)]\label{KF:residues}
+Since $x^d\ne1$, the $d+2$ linear factors $u,\,1-\omega^ru\ (0\le r\le d-1),\,1-xu$ are distinct, so
+\[
+\frac{T_{d,x}(u;q)}{u(1-u^d)(1-xu)}
+=-\frac{X_0^{(m)}(x;q)}{u}
++\sum_{r=0}^{d-1}\frac{D_{r,x}(q)}{1-\omega^ru}
++\frac{E_x(q)}{1-xu},
+\]
+with the residues determined by evaluation at the poles:
+\[
+-X_0^{(m)}(x;q)=\bigl.\tfrac{T_{d,x}(u;q)}{(1-u^d)(1-xu)}\bigr|_{u=0}=T_{d,x}(0;q),
+\quad
+D_{r,x}(q)=\frac{\omega^r}{d\,(1-x\omega^{-r})}\,T_{d,x}(\omega^{-r};q),
+\quad
+E_x(q)=\frac{x}{1-x^{-d}}\,T_{d,x}(x^{-1};q).
+\]
+\end{keyformula}
+
+\begin{keyformula}[Kernel $q$-shift identities matching the defect; Prop.~4.2, eqs.~(4.14)--(4.16)]\label{KF:kernelshift}
+The three correction kernels of Definition~\ref{def:kernels} satisfy, by termwise index shift,
+\[
+\Psi_d^{[x]}(qu)-x^2\Psi_d^{[x]}(u)=-\frac{M_d(u;q)}{u},
+\quad
+\Omega_{d,r}^{[x]}(qu)-x^2\Omega_{d,r}^{[x]}(u)=-\frac{M_d(u;q)}{1-\omega^ru},
+\quad
+\Omega_{d,\mathrm{ext}}^{[x]}(qu)-x^2\Omega_{d,\mathrm{ext}}^{[x]}(u)=-\frac{M_d(u;q)}{1-xu}.
+\]
+Combined with Key Formulas~\ref{KF:defect} and~\ref{KF:residues} these force
+\[
+K_{d,x}(u;q)=X_0^{(m)}(x;q)\,\Psi_d^{[x]}(u)
+-\sum_{r=0}^{d-1}D_{r,x}(q)\,\Omega_{d,r}^{[x]}(u)
+-E_x(q)\,\Omega_{d,\mathrm{ext}}^{[x]}(u).
+\]
+\end{keyformula}
+
+\begin{keyformula}[$P_d$-shift and the index-$m$ elliptic multiplier; Prop.~4.4, eqs.~(4.22),(4.21)]\label{KF:Pshift}
+Using the $P_d$ shift of Definition~\ref{def:MP} and $d=2m+1$, the homogeneous coefficient of
+the $P_d$-normalized equation collapses to the standard index-$m$ multiplier:
+\[
+P_d(qu;q)\cdot x^2q\,\frac{u^d-1}{u^{d-3}(u-1)}=x^2\,q^{-m}u^{-2m}\,P_d(u;q).
+\]
+Consequently $\Phi_{d,x}:=P_d\,\GG_{d,x}$ satisfies $\Phi_{d,x}(\tau,w+1)=\Phi_{d,x}(\tau,w)$ and
+\[
+\Phi_{d,x}(\tau,w+\tau)=x^2q^{-m}u^{-2m}\Phi_{d,x}(\tau,w)
++q^{-m}u^{-2m}P_d(u;q)\!\left(-X_0^{(m)}(x;q)
++\sum_{r=0}^{d-1}\frac{D_{r,x}(q)\,u}{1-\omega^ru}
++\frac{E_x(q)\,u}{1-xu}\right).
+\]
+\end{keyformula}
+
+\begin{keyformula}[Appell-kernel $\tau$-shift laws that cancel the defect; Prop.~4.5]\label{KF:appellshift}
+The elliptic-variable kernels of Definition~\ref{def:kernels} satisfy, via
+$mn^2+2mn=m(n+1)^2-m$ and $mn^2+n+2mn+1=m(n+1)^2+(n+1)-m$,
+\[
+\mathcal B_d^{[x]}(\tau,w+\tau)=x^2q^{-m}u^{-2m}\mathcal B_d^{[x]}(\tau,w)-q^{-m}u^{-2m}P_d(u;q),
+\]
+\[
+\mathcal A_{d,r}^{[x]}(\tau,w+\tau)=x^2q^{-m}u^{-2m}\mathcal A_{d,r}^{[x]}(\tau,w)
+-q^{-m}u^{-2m}\frac{uP_d(u;q)}{1-\omega^ru},
+\]
+and the analogous law for $\mathcal A_{d,\mathrm{ext}}^{[x]}$ with $1-\omega^ru\to1-xu$.
+These principal-part defects match those in Key Formula~\ref{KF:Pshift} term for term.
+\end{keyformula}
+
+\begin{keyformula}[The corrected function is elliptic; Cor.~4.6, eqs.~(4.26),(4.27)]\label{KF:corrected}
+Define
+\[
+\mathcal H_{d,x}(\tau,w):=\Phi_{d,x}(\tau,w)
+-X_0^{(m)}(x;q)\,\mathcal B_d^{[x]}(\tau,w)
++\sum_{r=0}^{d-1}D_{r,x}(q)\,\mathcal A_{d,r}^{[x]}(\tau,w)
++E_x(q)\,\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w).
+\]
+Then the defects of Key Formulas~\ref{KF:Pshift} and~\ref{KF:appellshift} cancel and
+\[
+\mathcal H_{d,x}(\tau,w+1)=\mathcal H_{d,x}(\tau,w),
+\qquad
+\mathcal H_{d,x}(\tau,w+\tau)=x^2q^{-m}u^{-2m}\,\mathcal H_{d,x}(\tau,w).
+\]
+\end{keyformula}
+
+\begin{keyformula}[Translation removes the constant twist; Thm.~1.2, eq.~(1.17)]\label{KF:untwist}
+Write $x=e^{2\pi i\alpha}$ with $0\le\alpha<1$, put $\lambda_x:=\alpha/m$ and
+$\widetilde{\mathcal H}_{d,x}(\tau,w):=\mathcal H_{d,x}(\tau,w+\lambda_x)$. Then the scalar twist
+is trivialized,
+\[
+x^2\,e^{-4\pi i m\lambda_x}=1
+\qquad(\text{since } m\lambda_x=\alpha \text{ and } x^2=e^{4\pi i\alpha}),
+\]
+so that
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,w+1)=\widetilde{\mathcal H}_{d,x}(\tau,w),
+\qquad
+\widetilde{\mathcal H}_{d,x}(\tau,w+\tau)=q^{-m}u^{-2m}\,\widetilde{\mathcal H}_{d,x}(\tau,w).
+\]
+\end{keyformula}
+
+\begin{keyformula}[The Jacobi carrier: covering identity, elliptic law, weight; Prop.~3.4, eqs.~(3.8),(3.9)]\label{KF:carrier}
+With $\JJ_{m,d}$ as in Definition~\ref{def:theta}, the triple-product substitution
+$\vartheta_1(\tau,z)=iq^{1/8}u^{-1/2}J(u;q)$ gives the covering formula
+\[
+\JJ_{m,d}(\tau,z)=q^{(m+1)/12}(q;q)_\infty^{\,2-4m}\,u^{-m}\,\frac{J(u;q)^{\,4m+1}}{J(u^d;q^d)}.
+\]
+The theta quasi-periodicities of Definition~\ref{def:theta} yield the index-$m$ elliptic law
+\[
+\JJ_{m,d}(\tau,z+1)=\JJ_{m,d}(\tau,z),
+\qquad
+\JJ_{m,d}(\tau,z+\tau)=q^{-m}u^{-2m}\,\JJ_{m,d}(\tau,z),
+\]
+and the weight exponent in the modular factor $e^{\pi i((4m+1)-d)cz^2/(c\tau+d_0)}$ is
+\[
+(4m+1)-d=2m,
+\]
+i.e.\ weight $1$, index $m$.
+\end{keyformula}
+
+\begin{keyformula}[The first new case $m=2$, $d=5$: explicit defect, residues, carrier; \S5]\label{KF:level5}
+For $m=2,\ d=5,\ \omega=e^{2\pi i/5}$, with $X_j:=X_j^{(2)}(1;q)$,
+\[
+R_{5,1}(u;q)=(q^{-1}u^2-u^3-u^2-u-1)X_0-(u^2+u)X_1-(u^3+u^2)X_2-u^3X_3,
+\]
+\[
+S_{5,1}(u;q):=(1-u)R_{5,1}(u;q)-5u^4\,\frac{(q^5;q^5)_\infty}{(q;q)_\infty},
+\]
+and Key Formula~\ref{KF:defect} specializes ($x=1$, so the $1-xu$ factor cancels) to
+\[
+K_{5,1}(qu;q)-K_{5,1}(u;q)=\frac{M_5(u;q)}{u(1-u^5)}\,S_{5,1}(u;q),
+\qquad
+D_{r,1}(q)=\frac{\omega^r}{5}\,S_{5,1}(\omega^{-r};q).
+\]
+The level-$5$ carrier is
+\[
+\JJ_{2,5}(\tau,w)=\eta(\tau)^{-6}\frac{\vartheta_1(\tau,w)^9}{\vartheta_1(5\tau,5w)}
+=q^{1/4}(q;q)_\infty^{-6}u^{-2}\frac{J(u;q)^9}{J(u^5;q^5)},
+\]
+of weight $1$, index $2$, on $\Gamma(600)$ (here $2-4m=-6$, $4m+1=9$, $24d^2=600$).
+\end{keyformula}
+
+\begin{keyformula}[Combinatorial $2\times2$ inversion for congruence multiplicities; Cor.~A.6]\label{KF:combi}
+Let $d=2m+1$. Given $U_m(N),D_m(N)\in\C$ satisfying the linear system
+\[
+U_m(N)=A_m(N)+(d-1)B_m(N),
+\qquad
+D_m(N)=A_m(N)-B_m(N),
+\]
+the unique solution is
+\[
+A_m(N)=\frac{U_m(N)+(d-1)D_m(N)}{d},
+\qquad
+B_m(N)=\frac{U_m(N)-D_m(N)}{d}.
+\]
+\end{keyformula}
+
+\end{document}

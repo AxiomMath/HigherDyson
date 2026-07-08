@@ -1,0 +1,2491 @@
+\documentclass[12pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\numberwithin{equation}{section}
+
+\geometry{margin=1in}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+\newcommand{\CC}{\mathbb C}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\RRm}{\mathcal R}
+\newcommand{\e}{\mathrm e}
+\newcommand{\FF}{\mathbb F}
+\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+
+\title{Higher Dyson ranks and meromorphic elliptic corrections}
+\author{Claudia Alfes and  Ken Ono}
+
+\address{Faculty of Mathematics, Bielefeld University, 
+Postfach 100131, 
+33501 Bielefeld
+Germany}
+\email{alfes@math.uni-bielefeld.de}
+
+\address{Axiom Math, 124 University Avenue, Palo Alto, CA 94301, USA}
+\email{ken@axiommath.ai}
+
+
+
+\date{}
+
+
+\begin{document}
+
+
+\begin{abstract} The \(m=1\) case of the Dyson rank generating function is a classical bridge
+between partition theory, Ramanujan's mock theta functions, and the modern
+theory of harmonic Maass forms and nonholomorphic Jacobi forms. We show that
+the higher Dyson systems, for \(m\geq 2\), exhibit a different but natural
+replacement for this picture. Their finite \(q\)-difference recurrence produces
+an explicit polynomial defect, whose partial fractions canonically prescribe
+Appell--Lerch correction terms. After a natural product normalization and these
+finite corrections, the distinguished torsion specializations assemble into
+meromorphic functions that satisfy twisted index \(m\) elliptic transformation
+laws. After local polar subtraction, the resulting holomorphic finite parts admit
+finite theta decompositions. 
+This identifies a new higher-index meromorphic correction mechanism for higher Dyson ranks, in which the natural analogue of Dyson's mock-modular phenomenon is governed by elliptic correction and finite theta decomposition.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+One of Ramanujan's most influential discoveries is his list of mock theta functions, described in his final letter to Hardy.  Among them, the third order mock theta function
+\[
+f(q):=\sum_{n\geq 0}\frac{q^{n^2}}{(1+q)^2(1+q^2)^2\cdots (1+q^n)^2}
+\]
+is a central example.  Ramanujan observed that such functions exhibit asymptotic behavior near roots of unity reminiscent of modular forms, even though they do not themselves satisfy the classical modular transformation laws.  Zwegers' work later explained this phenomenon by showing that mock theta functions admit nonholomorphic completions which transform as harmonic Maass forms.  This discovery placed Ramanujan's examples in a broad analytic framework connecting $q$-series, modular forms, harmonic Maass forms, and Jacobi-type objects.
+
+The same function $f(q)$ also appears in a second story of Ramanujan, namely the theory of integer partitions.  Let $p(n)$ denote the number of partitions of $n$.  Ramanujan discovered the congruences
+\[
+p(5n+4)\equiv 0\pmod 5,\qquad
+p(7n+5)\equiv 0\pmod 7,\qquad
+p(11n+6)\equiv 0\pmod {11}.
+\]
+Dyson introduced the rank of a partition, defined as the largest part minus the number of parts, as a statistic intended to explain the congruences modulo $5$ and $7$.  If $N(r,n)$ denotes the number of partitions of $n$ with rank $r$, then Dyson's rank generating function is
+\[
+\mathcal{R}_1(z;q)=\sum_{\lambda}z^{\operatorname{rank}(\lambda)}q^{|\lambda|}
+       =\sum_{n\geq 0}\frac{q^{n^2}}{(zq,z^{-1}q;q)_n},
+\]
+where
+\begin{equation*}
+(a;q)_n:=(1-a)(1-aq)\cdots (1-aq^{n-1}) \ \ \qquad {\text {\rm and}} \ \ \qquad
+(a,b;q)_n=(a;q)_n (b;q)_n.
+\end{equation*}
+We also use the standard infinite product notation
+\[
+(a;q)_\infty := \prod_{n\geq 0}(1-aq^n),
+\qquad
+(a_1,\ldots,a_r;q)_\infty := \prod_{j=1}^r (a_j;q)_\infty,
+\]
+whenever the products converge.
+
+The specialization $\mathcal{R}_1(-1;q)$ is Ramanujan's function $f(q)$.  More generally, the nontrivial root-of-unity specializations of $\mathcal{R}_1(z;q)$ are mock modular forms after completion.  Thus Dyson's rank is a basic bridge between the combinatorics of partitions and the analytic theory of mock modular and harmonic Maass forms.
+
+
+This paper studies the corresponding analytic problem for the higher Dyson series
+\begin{equation}\label{eq:intro-Rm}
+\mathcal{R}_m(z;q):=\sum_{n\geq 0}
+\frac{q^{n^2}}{\prod_{j=1}^m(z^jq,z^{-j}q;q)_n}.
+\end{equation}
+The case $m=1$ is Dyson's rank generating function.  For $m\geq 2$, these functions arise from higher Dyson-symbol statistics, recalled in Appendix A.  The main body of the paper is analytic: it studies the root-of-unity specializations of $\mathcal{R}_m(z;q)$, the finite $q$-difference equations they satisfy, and the elliptic correction theory forced by those equations.
+
+For $m\geq 2$, we
+show that the higher Dyson system produces a finite and explicit
+elliptic obstruction.  This obstruction is governed by a polynomial
+\(R_{d,x}(u;q)\) of degree at most \(d-2\), whose partial fractions determine
+canonical Appell--Lerch correction terms.  After these corrections are made,
+the resulting meromorphic functions satisfy a genuine index \(m\) elliptic
+transformation law, and their remaining local polar parts can be removed to
+give a finite theta decomposition. 
+Thus, the main contribution is the explicit passage from the higher
+Dyson recurrence to a canonically corrected meromorphic function satisfying a
+twisted index \(m\) elliptic transformation law, with completely finite
+correction data determined by the recurrence itself.
+
+
+
+To make this precise, we begin by fixing important notation.
+In analytic statements, we write
+\[
+\mathbb H := \{\tau\in\mathbb C : \operatorname{Im}(\tau)>0\},
+\qquad q:=e^{2\pi i\tau}.
+\]
+Throughout, we assume that $m\geq 2$ and we set
+\[
+d:=2m+1.
+\]
+If \(\zeta_d\) is a primitive \(d\)-th root of unity, then the product in
+\eqref{eq:intro-Rm} collapses to
+$$
+\RRm_m(\zeta_d;q)=
+\sum_{n\geq0}q^{n^2}\frac{(q;q)_n}{(q^d;q^d)_n}.
+$$
+The normalized specialization
+\begin{equation}\label{eq:intro-normalized-root}
+\frac{(q^d;q^d)_\infty}{(q;q)_\infty}\RRm_m(\zeta_d;q)
+\end{equation}
+is the \(x=1\), \(j=0\) member of the one-parameter deformation
+\begin{equation}\label{eq:intro-Xj}
+X_j^{(m)}(x;q):=
+\sum_{n\geq0}q^{n^2+jn}
+\frac{(x^dq^{d(n+1)};q^d)_\infty}{(xq^{n+1};q)_\infty}
+\qquad (j\in\ZZ).
+\end{equation}
+Equivalently, if we define
+\[
+G_d(y;q):=\frac{(y^dq^d;q^d)_\infty}{(yq;q)_\infty},
+\]
+then we have
+ \[ X_j^{(m)}(x;q)=\sum_{n\geq0}q^{n^2+jn}G_d(xq^n;q).
+ \]
+We assemble these functions together with the
+generating function
+\begin{equation}\label{eq:intro-F}
+\mathcal F_{d,x}(t;q):=\sum_{j\geq0}X_j^{(m)}(x;q)t^j,
+\end{equation}
+which we then rescale in the elliptic variable, with $u=e^{2\pi i w}$, as
+\begin{equation}\label{eq:intro-G}
+\mathcal G_{d,x}(u;q):=x^{-2}\mathcal F_{d,x}(xu;q).
+\end{equation}
+We normalize by the product
+\begin{equation}\label{eq:intro-P}
+P_d(u;q):=
+ u^{-m-1}J(-u;q)^{d+1}\frac{(q/u;q)_\infty}{(q^d/u^d;q^d)_\infty},
+ \end{equation}
+ where we have Jacobi's Triple Product identity
+\[
+J(u;q):=(u;q)_\infty(q/u;q)_\infty(q;q)_\infty
+=
+\sum_{n\in\ZZ}(-1)^n u^n q^{n(n-1)/2}.
+\]
+ Namely, we let
+\begin{equation}\label{eq:intro-Phi}
+\Phi_{d,x}(\tau,w):=P_d(u;q)\mathcal G_{d,x}(u;q),
+\end{equation}
+which is nearly the function we seek. However, like mock modular forms and Dyson's classical $\RRm_1(\zeta_d;q)$, a correction is required.
+In other words,  \(\Phi_{d,x}\) is not yet the final object, but it is the main starting point for the Jacobi-theoretic correction.  
+
+The next few definitions precisely describe how \(\Phi_{d,x}\) fails to satisfy a twisted index \(m\) elliptic transformation law. Specifically, we need a few more steps before we can introduce the explicit correction terms that remove this failure.
+We define
+\[
+C_x:=1+x+\cdots+x^{d-1},
+\]
+and we let \(R_{d,x}(u;q)\in q^{-1}\CC[[q]][u]\) be the unique polynomial
+of degree \(\leq d-2\) for which
+\begin{equation}\label{eq:intro-R-defining-equation}
+\mathcal G_{d,x}(qu;q)
+=
+x^2q\frac{u^d-1}{u^{d-3}(u-1)}\mathcal G_{d,x}(u;q)
++
+\frac{q}{u^{d-3}}R_{d,x}(u;q)
+-
+C_xq\frac{u^2}{1-xu}G_d(x;q).
+\end{equation}
+This existence and uniqueness are proved in Section~\ref{sec:corrected-lift}.
+We then define
+\[
+\varepsilon_x:=
+\begin{cases}
+1,&x^d\neq1,\\
+0,&x^d=1,
+\end{cases}
+\]
+and  the polynomial 
+\[
+Q_{d,x}(u;q):=
+\begin{cases}
+(1-xu)(1-u)R_{d,x}(u;q)-C_xu^{d-1}(1-u)G_d(x;q),&x^d\neq1,\\[3pt]
+(1-u)R_{d,1}(u;q)-du^{d-1}G_d(1;q),&x=1,\\[3pt]
+(1-u)R_{d,x}(u;q),&x\neq1,\ x^d=1.
+\end{cases}
+\]
+The coefficients \(D_{r,x}(q)\) \((0\leq r\leq d-1)\) are characterized as follows.  When
+\(x^d\neq1\), the term \(E_x(q)\) is characterized by
+\begin{equation}\label{eq:intro-partial-fraction}
+\frac{Q_{d,x}(u;q)}{u(1-u^d)(1-xu)^{\varepsilon_x}}
+=
+-\frac{X_0^{(m)}(x;q)}{u}
++
+\sum_{r=0}^{d-1}\frac{D_{r,x}(q)}{1-\omega^ru}
++
+\varepsilon_x\frac{E_x(q)}{1-xu},
+\qquad
+\omega:=e^{2\pi i/d}.
+\end{equation}
+If \(x^d=1\), then we let \(E_x(q):=0\).  
+
+The partial fraction decomposition (\ref{eq:intro-partial-fraction}) separates the defect into a constant
+term, \(d\) torsion-pole terms, and, when \(x^d\neq1\), one additional pole
+term at \(u=x^{-1}\).  We cancel these pieces by introducing
+correction kernels.  The kernel \(\mathcal B_d^{[x]}\) cancels the constant
+part of the defect, while \(\mathcal A_{d,r}^{[x]}\) and
+\(\mathcal A_{d,\mathrm{ext}}^{[x]}\) are Appell--Lerch-type kernels whose
+linear denominators record the corresponding pole orbits.  Their shift
+identities under \(w\mapsto w+\tau\) are designed to reproduce exactly the
+rational terms appearing in the elliptic transformation defect of
+\(\Phi_{d,x}\).
+
+We now make this precise.
+For \(u=e^{2\pi i w}\), define
+\begin{equation}\label{eq:intro-B-kernel}
+\mathcal B_d^{[x]}(\tau,w)
+:=
+\sum_{n\geq0}x^{-2n-2}q^{mn^2}u^{2mn}P_d(q^nu;q),
+\end{equation}
+\begin{equation}\label{eq:intro-Ar-kernel}
+\mathcal A_{d,r}^{[x]}(\tau,w)
+:=
+\sum_{n\geq0}x^{-2n-2}q^{mn^2+n}u^{2mn+1}
+\frac{P_d(q^nu;q)}{1-\omega^rq^nu}
+\qquad(0\leq r\leq d-1),
+\end{equation}
+and
+\begin{equation}\label{eq:intro-Aext-kernel}
+\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w)
+:=
+\sum_{n\geq0}x^{-2n-2}q^{mn^2+n}u^{2mn+1}
+\frac{P_d(q^nu;q)}{1-xq^nu}.
+\end{equation}
+The {\it elliptically corrected Dyson function} we obtain is
+\begin{equation}\label{eq:intro-H-definition}
+\mathcal H_{d,x}(\tau,w)
+:=
+\Phi_{d,x}(\tau,w)
+-
+X_0^{(m)}(x;q)\mathcal B_d^{[x]}(\tau,w)
++
+\sum_{r=0}^{d-1}D_{r,x}(q)\mathcal A_{d,r}^{[x]}(\tau,w)
++
+\varepsilon_xE_x(q)\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w).
+\end{equation}
+When \(x^d=1\), the last term is omitted because \(\varepsilon_x=0\).
+
+\begin{remark} 
+As we shall see in Section~\ref{sec:3},  the higher Dyson \(q\)-difference equation naturally leads to the elliptic side
+of Jacobi theory.
+After multiplication by the elementary product normalization \(P_d\), the homogeneous part of the recurrence acquires the standard index \(m\) elliptic multiplier
+ \(q^{-m}u^{-2m}\), while the same
+normalization introduces the denominator \(1-u^d\).  Thus, the higher
+Dyson system naturally produces a \(d\)-torsion polar divisor.  The theta
+quotient
+\[
+\eta(\tau)^{2-4m}
+\frac{\vartheta_1(\tau,z)^{4m+1}}{\vartheta_1(d\tau,dz)}
+\]
+is the corresponding meromorphic Jacobi form carrier (see Proposition~\ref{prop:jacobi-carrier}),
+where \(\eta\) is Dedekind's eta-function and \(\vartheta_1\) is a Jacobi theta function.
+It has the same
+index \(m\) elliptic law and the same \(d\)-torsion pole geometry.  This shows that the higher Dyson recurrence itself generates the
+Jacobi geometry underlying the correction theory.
+\end{remark}
+
+
+\medskip
+\begin{remark}
+At the point \(x=1\), the term \(X_0^{(m)}(1;q)\) appearing in
+\eqref{eq:intro-H-definition} is the normalized primitive
+\(d\)-th-root specialization in \eqref{eq:intro-normalized-root}:
+\[
+X_0^{(m)}(1;q)=
+\frac{(q^d;q^d)_\infty}{(q;q)_\infty}\RRm_m(\zeta_d;q).
+\]
+The construction has the following flow:
+\[
+\mathcal F_{d,x}
+\longrightarrow
+\mathcal G_{d,x}
+\longrightarrow
+\Phi_{d,x}:=P_d\mathcal G_{d,x}
+\longrightarrow
+\mathcal H_{d,x}
+\longrightarrow
+\widetilde{\mathcal H}_{d,x}
+\longrightarrow
+\widetilde{\mathcal H}^{F,\mathrm{loc}}_{d,x},
+\]
+where the last two functions are defined below.
+The first two arrows package the higher Dyson values into an elliptic
+variable.  The product \(P_d\) exposes a finite defect, the Appell--Lerch
+kernels cancel that defect, and the final two arrows remove the constant twist
+and the remaining local principal parts.
+
+We recall the notation:
+\begin{center}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}ll@{}}
+\(\mathcal F_{d,x}\) & generating series for the deformed higher Dyson sequence, \eqref{eq:intro-F},\\
+\(\mathcal G_{d,x}\) & rescaled generating series in the elliptic variable, \eqref{eq:intro-G},\\
+\(P_d\) & product normalizing the elliptic multiplier, \eqref{eq:intro-P},\\
+\(\Phi_{d,x}\) & normalized object before correction, \eqref{eq:intro-Phi},\\
+\(\mathcal H_{d,x}\) & corrected meromorphic function, \eqref{eq:intro-H-definition},\\
+\(\widetilde{\mathcal H}_{d,x}\) & translate satisfying the standard index \(m\) law, \eqref{eq:intro-translation-new},\\
+\(\widetilde{\mathcal H}^{F,\mathrm{loc}}_{d,x}\) & holomorphic finite part after local polar subtraction, \eqref{eq:intro-polar-subtraction-new}.
+\end{tabular}
+\end{center}
+\end{remark}
+
+The first theorem isolates the finite algebraic obstruction.  This is the
+point at which the higher Dyson deformation departs from the classical rank
+series: the obstruction is not infinite or mysterious, but a completely
+explicit rational expression supported on torsion data.
+
+\begin{theorem}%[Finite defect and correction data]
+\label{thm:intro-defect}
+Fix \(m\geq2\), put \(d=2m+1\), and let \(x=e^{2\pi i\alpha}\) be a root of
+unity with \(0\leq\alpha<1\).  Then the following statements hold.
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=*]
+\item The polynomial \(R_{d,x}\in q^{-1}\CC[[q]][u]\) in
+\eqref{eq:intro-R-defining-equation} exists and has degree at most \(d-2\),
+with
+\[
+R_{d,x}(0;q)=-X_0^{(m)}(x;q).
+\]
+
+\item The partial fraction coefficients \(D_{r,x}(q)\) and \(E_x(q)\) in
+\eqref{eq:intro-partial-fraction} exist and are unique. 
+%Here \(E_x(q)=0\) when \(x^d=1\).
+
+\item The series in \eqref{eq:intro-B-kernel} and
+\eqref{eq:intro-Ar-kernel} converge normally on compact subsets of
+\(\HH\times\CC\) disjoint from the orbits
+\[
+w\equiv -\frac rd \pmod{\ZZ\tau+\ZZ}
+\qquad(0\leq r\leq d-1).
+\]
+When \(x^d\neq1\), the series in \eqref{eq:intro-Aext-kernel} converges
+normally on compact subsets disjoint from those orbits and from
+\[
+w\equiv -\alpha \pmod{\ZZ\tau+\ZZ}.
+\]
+\end{enumerate}
+\end{theorem}
+
+The partial fractions that arise from Theorem~\ref{thm:intro-defect} determine the
+Appell--Lerch corrections in \eqref{eq:intro-H-definition}.  After these
+corrections are inserted, we obtain the elliptic transformation laws for $\mathcal{H}_{d,x}(\tau,w)$ and $\widetilde{\mathcal{H}}_{d,x}(\tau,w),$  where 
+\begin{equation}\label{eq:intro-translation-new}
+\lambda_x:=\frac{\alpha}{m},
+\qquad
+\widetilde{\mathcal H}_{d,x}(\tau,w):=
+\mathcal H_{d,x}(\tau,w+\lambda_x).
+\end{equation}
+
+\begin{theorem}%[Elliptic correction]
+\label{thm:intro-corrected-lift}
+Assume the notation and hypotheses  of Theorem~\ref{thm:intro-defect}, and let
+\(\mathcal H_{d,x}\) be the function in \eqref{eq:intro-H-definition}.  Then
+\(\mathcal H_{d,x}(\tau,w)\) is meromorphic in \(w\), and its possible poles are
+at most simple. These poles are contained in the union of lattice orbits
+\begin{equation}\label{eq:intro-Sigma-new}
+\bigcup_{\beta\in\Sigma_{d,x}}
+\bigl(\beta+\ZZ\tau+\ZZ\bigr),
+\qquad
+\Sigma_{d,x}:=
+\left\{-\frac rd:0\leq r\leq d-1\right\}
+\cup
+\begin{cases}
+\{-\alpha\},&x^d\neq1,\\
+\varnothing,&x^d=1,
+\end{cases}
+\subset\QQ/\ZZ.
+\end{equation}
+Moreover, we have
+\begin{equation}\label{eq:intro-H-twisted-new}
+\mathcal H_{d,x}(\tau,w+1)=\mathcal H_{d,x}(\tau,w),
+\qquad
+\mathcal H_{d,x}(\tau,w+\tau)=
+x^2q^{-m}u^{-2m}\mathcal H_{d,x}(\tau,w).
+\end{equation}
+For $\widetilde{\mathcal H}_{d,x}(\tau,w)$ the constant twist disappears, i.e.
+\begin{equation}\label{eq:intro-H-untwisted-new}
+\widetilde{\mathcal H}_{d,x}(\tau,w+1)=
+\widetilde{\mathcal H}_{d,x}(\tau,w) 
+\qquad \text{and} \qquad
+\widetilde{\mathcal H}_{d,x}(\tau,w+\tau)=
+q^{-m}u^{-2m}\widetilde{\mathcal H}_{d,x}(\tau,w).
+\end{equation}
+The possible pole set of \(\widetilde{\mathcal H}_{d,x}\) is contained in the
+union of orbits represented by
+\begin{equation}\label{eq:intro-Sigma-tilde-new}
+\widetilde\Sigma_{d,x}:=\Sigma_{d,x}-\lambda_x\subset\QQ/\ZZ.
+\end{equation}
+\end{theorem}
+
+The last step is local.  The correction is already elliptic, but it may
+still have simple poles on finitely many torsion orbits.  Subtracting the
+matching local Appell--Lerch principal parts leaves a holomorphic section of
+an index \(m\) theta bundle, and therefore a finite theta expansion. Therefore, we define
+\[
+A_{m,\beta}(\tau,w):=
+-\sum_{n\in\ZZ}
+\frac{q^{mn^2}u^{2mn}}{1-e^{-2\pi i\beta}q^n u}
+\]
+and
+\begin{equation}\label{eq:intro-polar-subtraction-new}
+\widetilde{\mathcal H}^{F,\mathrm{loc}}_{d,x}(\tau,w)
+:=
+\widetilde{\mathcal H}_{d,x}(\tau,w)
+-
+\sum_{\beta\in\widetilde\Sigma_{d,x}}
+ c_{\beta,x}(\tau)A_{m,\beta}(\tau,w).
+\end{equation}
+
+\begin{theorem}%[Theta decomposition]
+\label{thm:intro-finite-part}
+Assume the notation and hypotheses of Theorem~\ref{thm:intro-corrected-lift}.
+For each \(\beta\in\widetilde\Sigma_{d,x}\), define \(c_{\beta,x}(\tau)\) by
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,\beta+\varepsilon)
+=
+\frac{c_{\beta,x}(\tau)}{2\pi i\,\varepsilon}+O(1)
+\qquad(\varepsilon\to0).
+\]
+Then the functions \(c_{\beta,x}(\tau)\) are holomorphic in \(\tau\).  If
+\(\widetilde{\mathcal H}_{d,x}\) is holomorphic at the orbit represented by
+\(\beta\), then \(c_{\beta,x}(\tau)=0\).
+
+Moreover, \(\widetilde{\mathcal H}^{F,\mathrm{loc}}_{d,x}\) is holomorphic in
+\(w\) and satisfies the untwisted elliptic law \eqref{eq:intro-H-untwisted-new}.
+Consequently there are unique holomorphic functions \(h_{\ell,x}(\tau)\),
+indexed by \(\ell\pmod{2m}\), such that
+\begin{equation}\label{eq:intro-theta-decomp-new}
+\widetilde{\mathcal H}^{F,\mathrm{loc}}_{d,x}(\tau,w)
+=
+\sum_{\ell\,(\mathrm{mod}\,2m)}
+h_{\ell,x}(\tau)\,\vartheta_{m,\ell}(\tau,w),
+\qquad
+\end{equation}
+where
+$$
+\vartheta_{m,\ell}(\tau,w):=
+\sum_{\substack{r\in\ZZ\\ r\equiv\ell\,(\mathrm{mod}\,2m)}}
+q^{r^2/4m}u^r.
+$$
+\end{theorem}
+
+Theorems~\ref{thm:intro-defect}--\ref{thm:intro-finite-part} are elliptic structure theorems. They identify the finite
+obstruction to the natural index \(m\) elliptic law and show that this
+obstruction is removed by canonical Appell--Lerch corrections. The resulting
+theta decompositions are therefore consequences of the corrected elliptic
+geometry. Questions concerning modular, mock modular, or harmonic Maass
+properties of the theta coefficients are left for future work.
+
+
+The paper is organized as follows.  Section~2 proves the recurrence for the
+deformed family.  Section~3 records the elliptic and Appell--Lerch tools.
+Section~4 constructs the elliptically corrected function and proves
+Theorems~\ref{thm:intro-defect}--\ref{thm:intro-finite-part}.
+Section~5 treats the level \(5\) case.  
+For \(m=2\), \(d=5\), Theorems~\ref{thm:intro-defect}--\ref{thm:intro-finite-part}
+give a corrected index \(2\) elliptic object attached to
+\[
+\RRm_2(\zeta_5;q)=
+\sum_{n\geq0}q^{n^2}\frac{(q;q)_n}{(q^5;q^5)_n}.
+\]
+We compute this first new case explicitly, including
+the normalizing factor, the correction kernels, and the Jacobi carrier.
+Finally,  in Appendix~\ref{app:combinatorics} we
+give the combinatorial origin of the higher Dyson series.
+The combinatorial interpretation of \(\RRm_m(z;q)\) is given in terms of uncoupled
+higher Dyson symbols. The main
+body of the paper uses only the series \eqref{eq:intro-Xj}, its finite
+\(q\)-difference equation, and the elliptic correction mechanism.
+
+
+\section{The higher Dyson deformation and its recurrence}
+
+Throughout this paper, we write
+\[
+q=e^{2\pi i\tau},\qquad \tau\in\HH,
+\]
+and therefore $|q|<1$.
+The main analytic argument uses the deformed sequence \(X_j^{(m)}(x;q)\)
+rather than the full combinatorial model, where  the specialization \(x=1\),
+\(j=0\), recovers the normalized primitive \(d\)-th-root specialization of
+\(\RRm_m\) by \eqref{eq:intro-normalized-root}. We defer discussion of the partition-theoretic
+interpretation to Appendix~\ref{app:combinatorics}.
+
+Let $m\geq 2$ and set $d:=2m+1$.  From the introduction, we recall that
+\[
+G_d(x;q):=\frac{(x^dq^d;q^d)_\infty}{(xq;q)_\infty}.
+\]
+For every integer $j$, we let
+\[
+X_j^{(m)}(x;q):=\sum_{n\geq 0} q^{n^2+jn}G_d(xq^n;q).
+\]
+The corresponding generating series  in $t$-aspect is
+\[
+\mathcal F_{d,x}(t;q):=\sum_{j\geq 0} X_j^{(m)}(x;q)t^j.
+\]
+The next lemma records the basic meromorphic structure of $\mathcal F_{d,x}(t;q)$ in the variable $t$.
+
+\begin{lemma}\label{lem:F-meromorphic}
+Let $x\in\CC^\times$ and $|q|<1$.  Assume that
+$x\notin q^{-\ZZ_{\geq 1}}$, so that the factors in
+$G_d(xq^n;q)$ which occur below are finite.  This condition holds, in
+particular, for every root of unity $x$.  Then one has
+\[
+\mathcal F_{d,x}(t;q)
+=
+\sum_{n\geq 0}\frac{q^{n^2}G_d(xq^n;q)}{1-tq^n}
+\qquad (|t|<1).
+\]
+Consequently $\mathcal F_{d,x}(t;q)$ extends meromorphically to the $t$-plane, with at most simple poles at the points $t=q^{-n}$ $(n\geq 0)$.
+\end{lemma}
+
+\begin{proof}
+For $|t|<1$ the defining series converges absolutely, so one may interchange the $j$-sum and the $n$-sum:
+\[
+\mathcal F_{d,x}(t;q)
+=
+\sum_{j\geq 0}\sum_{n\geq 0} q^{n^2+jn}G_d(xq^n;q)t^j
+=
+\sum_{n\geq 0} q^{n^2}G_d(xq^n;q)\sum_{j\geq 0}(tq^n)^j.
+\]
+Summing the geometric series gives the stated formula.  The right-hand side is meromorphic in $t$ with only the indicated simple poles.
+\end{proof}
+
+The next step is to extract a finite \(q\)-difference relation from the higher
+Dyson system.  This recurrence is the algebraic engine of the paper: at
+\(d\)-th roots of unity it collapses to a homogeneous relation, while away from
+those roots it produces the explicit defect that will later be removed by the
+Appell--Lerch corrections.
+The crucial recurrence is obtained from the elementary quotient
+\[
+\frac{G_d(x;q)}{G_d(xq;q)}=\frac{1-x^dq^d}{1-xq}=1+xq+x^2q^2+\cdots+x^{d-1}q^{d-1}.
+\]
+
+\begin{proposition}%[The fundamental $(2m+1)$-term recurrence]
+\label{prop:recurrence}
+Let $m\geq 2$, set $d:=2m+1$, and let $x\in\CC^\times$.  Then for every integer $j$ one has
+\begin{equation}\label{eq:fundamental-recurrence}
+\sum_{r=0}^{d-1} x^r X_{j+r-2}^{(m)}(x;q)-q^{j-1}X_j^{(m)}(x;q)
+=
+\Bigl(\sum_{r=0}^{d-1}x^r\Bigr)G_d(x;q).
+\end{equation}
+In particular, if $x$ is a nontrivial $d$-th root of unity, then the right-hand side vanishes.
+\end{proposition}
+
+\begin{proof}
+From the quotient identity above we obtain
+\[
+G_d(xq^n;q)=\Bigl(\sum_{r=0}^{d-1}x^rq^{r(n+1)}\Bigr)G_d(xq^{n+1};q).
+\]
+We multiply by $q^{n^2+jn}$ and sum over $n\geq 0$, which gives
+\[
+X_j^{(m)}(x;q)
+=
+\sum_{r=0}^{d-1}x^r\sum_{n\geq 0}q^{n^2+(j+r)n+r}G_d(xq^{n+1};q).
+\]
+Setting $N:=n+1$ yields
+\[
+n^2+(j+r)n+r=N^2+(j+r-2)N+(1-j).
+\]
+Therefore, we have
+\[
+X_j^{(m)}(x;q)
+=
+q^{1-j}\sum_{r=0}^{d-1}x^r\sum_{N\geq 1} q^{N^2+(j+r-2)N}G_d(xq^N;q).
+\]
+The $N=0$ term of $X_{j+r-2}^{(m)}(x;q)$ is precisely $G_d(x;q)$.  Hence
+\[
+X_j^{(m)}(x;q)
+=
+q^{1-j}\sum_{r=0}^{d-1}x^r\bigl(X_{j+r-2}^{(m)}(x;q)-G_d(x;q)\bigr),
+\]
+which is equivalent to \eqref{eq:fundamental-recurrence}.
+\end{proof}
+
+\section{Elliptic preliminaries}\label{sec:3}
+
+In this section we collect the analytic facts about elliptic functions and Jacobi forms that are needed later.
+
+\subsection{Theta decomposition for holomorphic functions with elliptic law}
+
+For $m\geq 1$ and $\ell\in\ZZ,$ we write
+\[
+\vartheta_{m,\ell}(\tau,z)
+:=
+\sum_{\substack{r\in\ZZ\\ r\equiv \ell\, (\mathrm{mod}\,2m)}} q^{r^2/4m}e^{2\pi i r z}.
+\]
+The following standard lemma records the elliptic half of the Jacobi-form
+structure: a holomorphic function satisfying the index \(m\) elliptic
+transformation law has a finite expansion in the theta functions
+\(\vartheta_{m,\ell}\), with one coefficient for each class
+\(\ell \pmod{2m}\).
+
+
+\begin{lemma}[Classical theta decomposition]\label{lem:theta-decomposition}
+Let \(m\geq 1\).  Suppose that \(F(\tau,z)\) is holomorphic on
+\(\HH\times\CC\) and satisfies
+\begin{equation}\label{eq:index-m-elliptic}
+F(\tau,z+1)=F(\tau,z),
+\qquad
+F(\tau,z+\tau)=q^{-m}e^{-4\pi i m z}F(\tau,z).
+\end{equation}
+Then there exist unique holomorphic coefficient functions \(h_\ell(\tau)\), indexed by \(\ell\pmod{2m}\), such that
+\begin{equation}\label{eq:theta-decomp-formula}
+F(\tau,z)=\sum_{\ell\, (\mathrm{mod}\,2m)} h_\ell(\tau)\,\vartheta_{m,\ell}(\tau,z).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since \(F(\tau,z+1)=F(\tau,z)\), the function \(z\mapsto F(\tau,z)\) has a
+Fourier expansion
+\[
+F(\tau,z)=\sum_{r\in\ZZ} c_r(\tau)e^{2\pi i r z},
+\]
+which converges locally uniformly in \((\tau,z)\).  The coefficients may be
+written as
+\[
+c_r(\tau)=\int_0^1 F(\tau,t)e^{-2\pi i r t}\,dt.
+\]
+Because \(F\) is holomorphic on \(\HH\times\CC\), this integral formula shows
+that every \(c_r(\tau)\) is holomorphic in \(\tau\).  The local uniform
+convergence also justifies the coefficient comparisons below.
+
+We apply the second identity in \eqref{eq:index-m-elliptic}.  On the one hand,
+\[
+F(\tau,z+\tau)=\sum_{r\in\ZZ} c_r(\tau)q^r e^{2\pi i r z}.
+\]
+On the other hand, we have
+\[
+q^{-m}e^{-4\pi i m z}F(\tau,z)
+=
+q^{-m}\sum_{r\in\ZZ} c_r(\tau)e^{2\pi i (r-2m)z}
+=
+\sum_{r\in\ZZ} q^{-m}c_{r+2m}(\tau)e^{2\pi i r z}.
+\]
+Comparing coefficients of \(e^{2\pi i r z}\) gives
+\begin{equation}\label{eq:coeff-recurrence}
+c_{r+2m}(\tau)=q^{r+m}c_r(\tau)
+\qquad (r\in\ZZ).
+\end{equation}
+Hence the quantity \(q^{-r^2/4m}c_r(\tau)\) depends only on the residue class
+of \(r\) modulo \(2m\), because
+\[
+q^{-(r+2m)^2/4m}c_{r+2m}(\tau)
+=
+q^{-r^2/4m-r-m}q^{r+m}c_r(\tau)
+=
+q^{-r^2/4m}c_r(\tau).
+\]
+For each residue class \(\ell\pmod{2m}\) define
+\[
+h_\ell(\tau):=q^{-\ell^2/4m}c_\ell(\tau).
+\]
+These functions are holomorphic in \(\tau\).  Iterating \eqref{eq:coeff-recurrence} shows that for every integer \(n\),
+\[
+c_{\ell+2mn}(\tau)=h_\ell(\tau)q^{(\ell+2mn)^2/4m}.
+\]
+Substituting this into the Fourier expansion of \(F\) yields exactly \eqref{eq:theta-decomp-formula}.  Uniqueness is immediate from the uniqueness of the Fourier expansion.
+\end{proof}
+
+\subsection{Appell--Lerch kernels}
+
+We define the Appell--Lerch kernels needed in this work.
+Let $m\geq 1$ and let $\beta\in\QQ$.  Set $u:=e^{2\pi i z}$.  Define
+\begin{equation}\label{eq:appell-constant}
+A_{m,\beta}(\tau,z)
+:=
+-\sum_{n\in\ZZ}
+\frac{q^{mn^2}u^{2mn}}{1-e^{-2\pi i\beta}q^n u}.
+\end{equation}
+The next proposition records the basic analytic properties of these kernels.
+They are meromorphic functions with precisely controlled simple poles, and their
+elliptic transformation law is exactly the one needed later to cancel the polar
+terms of the elliptically corrected Dyson functions.
+
+\begin{proposition}\label{prop:appell-constant}
+Let $m\geq 1$ and $\beta\in\QQ$.
+
+\begin{enumerate}[label=\textnormal{(\arabic*)}]
+\item The series \eqref{eq:appell-constant} converges locally uniformly on compact subsets of $\HH\times\CC$ away from its poles and therefore defines a meromorphic function.
+
+\item One has the elliptic transformation law
+\begin{equation}\label{eq:appell-elliptic}
+A_{m,\beta}(\tau,z+1)=A_{m,\beta}(\tau,z),
+\qquad
+A_{m,\beta}(\tau,z+\tau)=q^{-m}u^{-2m}A_{m,\beta}(\tau,z).
+\end{equation}
+
+\item The poles are simple and lie exactly on the lattice orbit
+\[
+z\equiv \beta \pmod{\ZZ\tau+\ZZ}.
+\]
+More precisely,
+\begin{equation}\label{eq:appell-local}
+A_{m,\beta}(\tau,\beta+\varepsilon)
+=
+\frac1{2\pi i\,\varepsilon}+\OO(1)
+\qquad (\varepsilon\to 0).
+\end{equation}
+
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Let $K\subset \HH\times\CC$ be a compact set avoiding the poles.  Then there is a constant $M>0$ such that $|\Im(z)|\leq M$ on $K$.
+
+For $n\geq 0$, the denominator in \eqref{eq:appell-constant} is bounded away from $0$ uniformly on $K$, and the numerator satisfies
+\[
+\bigl|q^{mn^2}u^{2mn}\bigr|
+=
+\exp\bigl(-2\pi m n^2\Im(\tau)-4\pi mn\Im(z)\bigr)
+\leq
+\exp\bigl(-2\pi m n^2\Im(\tau)+4\pi mnM\bigr),
+\]
+which decays like $\exp(-c n^2)$ for some $c>0$.
+
+For $n<0$ write $n=-r$ with $r\geq 1$.  Since the compact set avoids the poles, the denominator is again bounded away from $0$ after dividing numerator and denominator by $q^{-r}u$:
+\[
+\frac{q^{mr^2}u^{-2mr}}{1-e^{-2\pi i\beta}q^{-r}u}
+=
+-\,e^{2\pi i\beta}q^{mr^2+r}u^{-2mr-1}\Bigl(1+\OO(|q|^r)\Bigr).
+\]
+The right-hand side also decays like $\exp(-c r^2)$.  Thus \eqref{eq:appell-constant} converges normally on compacta away from its poles.
+
+The identity $A_{m,\beta}(\tau,z+1)=A_{m,\beta}(\tau,z)$ is immediate because $u$ is unchanged by $z\mapsto z+1$.  For the second transformation law,
+\[
+A_{m,\beta}(\tau,z+\tau)
+=
+-\sum_{n\in\ZZ}\frac{q^{mn^2}(qu)^{2mn}}{1-e^{-2\pi i\beta}q^{n+1}u}.
+\]
+Set $r:=n+1$.  Since
+\[
+mn^2+2mn=m(r-1)^2+2m(r-1)=mr^2-m,
+\]
+and $u^{2m(r-1)}=u^{2mr-2m}$, we obtain
+\[
+A_{m,\beta}(\tau,z+\tau)
+=
+q^{-m}u^{-2m}
+\left(-\sum_{r\in\ZZ}\frac{q^{mr^2}u^{2mr}}{1-e^{-2\pi i\beta}q^ru}\right)
+=
+q^{-m}u^{-2m}A_{m,\beta}(\tau,z).
+\]
+This proves \eqref{eq:appell-elliptic}.
+
+The denominator in the $n$-th summand vanishes exactly when
+$e^{-2\pi i\beta}q^n u=1$,
+that is,
+\[
+z\equiv \beta-n\tau \pmod{\ZZ}.
+\]
+As $n$ runs through $\ZZ$, these are exactly the points on the orbit $\beta+\ZZ\tau+\ZZ$.  Near $z=\beta$, only the term $n=0$ is singular, and it contributes
+\[
+-\frac{1}{1-e^{2\pi i(z-\beta)}}
+=
+\frac{1}{2\pi i(z-\beta)}+\OO(1),
+\]
+which proves \eqref{eq:appell-local}.
+\end{proof}
+
+We now record how to subtract the polar part to obtain a holomorphic object.
+
+
+\begin{proposition}%[Local polar subtraction for simple poles]
+\label{prop:local-polar-subtraction}
+Let \(m\geq 1\), and let \(H(\tau,z)\) be jointly meromorphic on
+\(\HH\times\CC\).  Suppose that \(H\) satisfies the elliptic law
+\eqref{eq:index-m-elliptic}, and that all possible poles of \(H(\tau,\cdot)\)
+are at most simple and lie on finitely many constant torsion orbits represented
+by rational numbers \(\beta\in S\subset\QQ/\ZZ\).
+
+For each \(\beta\in S\), write the Laurent expansion in the form
+\[
+H(\tau,\beta+\varepsilon)
+=
+\frac{c_{\beta}(\tau)}{2\pi i\,\varepsilon}+\OO(1)
+\qquad (\varepsilon\to 0).
+\]
+Then each residue coefficient \(c_\beta(\tau)\) is holomorphic in \(\tau\).
+Define
+\[
+H^{P,\mathrm{loc}}(\tau,z)
+:=
+\sum_{\beta\in S}c_{\beta}(\tau)A_{m,\beta}(\tau,z).
+\]
+Then \(H-H^{P,\mathrm{loc}}\) is holomorphic on \(\HH\times\CC\) and satisfies
+the same elliptic law \eqref{eq:index-m-elliptic}.  Consequently there are
+unique holomorphic coefficient functions \(h_\ell(\tau)\) \((\ell\pmod{2m})\)
+such that
+\begin{equation}\label{eq:local-finite-theta}
+H(\tau,z)-H^{P,\mathrm{loc}}(\tau,z)
+=
+\sum_{\ell\, (\mathrm{mod}\,2m)} h_\ell(\tau)\vartheta_{m,\ell}(\tau,z).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Because the possible pole locations are fixed torsion points and the poles are
+at most simple, the function
+\[
+2\pi i\,\varepsilon\,H(\tau,\beta+\varepsilon)
+\]
+has a holomorphic extension to \(\varepsilon=0\) in a neighborhood of every
+\(\tau\in\HH\).  Its value at \(\varepsilon=0\) is \(c_\beta(\tau)\), so
+\(c_\beta\) is holomorphic in \(\tau\).  If the possible pole cancels, this
+value is zero.
+
+Fix \(\beta\in S\).  By Proposition~\ref{prop:appell-constant}, the local
+expansion of \(c_\beta(\tau)A_{m,\beta}(\tau,\beta+\varepsilon)\) is
+\[
+\frac{c_\beta(\tau)}{2\pi i\,\varepsilon}+\OO(1).
+\]
+Terms associated to other orbit representatives are holomorphic at
+\(z=\beta\).  Thus \(H\) and \(H^{P,\mathrm{loc}}\) have the same principal
+part at every possible pole, and \(H-H^{P,\mathrm{loc}}\) is holomorphic after
+removing these singularities.  Since the cancellation is local in
+\((\tau,z)\), the result is holomorphic on \(\HH\times\CC\).
+
+Each kernel \(A_{m,\beta}\) satisfies the elliptic law \eqref{eq:index-m-elliptic}, and hence so does \(H^{P,\mathrm{loc}}\).  Therefore \(H-H^{P,\mathrm{loc}}\) also satisfies \eqref{eq:index-m-elliptic}.  Lemma~\ref{lem:theta-decomposition} gives \eqref{eq:local-finite-theta} with holomorphic coefficient functions.
+\end{proof}
+
+\subsection{A certain theta quotient}
+
+We now record the explicit theta quotient that has the same divisor as our main object of study.
+To make this precise, we
+let
+\[
+\eta(\tau):=q^{1/24}(q;q)_\infty
+\]
+be Dedekind's eta function, and let
+\[
+\vartheta_1(\tau,z)
+:=
+iq^{1/8}e^{-\pi i z}
+(e^{2\pi i z};q)_\infty
+(qe^{-2\pi i z};q)_\infty
+(q;q)_\infty .
+\]
+Furthermore, we let \(\Gamma(N)\) denote the principal congruence subgroup of level \(N\).
+
+\begin{proposition}\label{prop:jacobi-carrier}
+Let $m\geq 1$ and set $d:=2m+1$.  Define
+\[
+\Gamma_d^{\sharp}:=\Gamma(24d^2).
+\]
+Let
+\[
+\vartheta_1(\tau,z):=i q^{1/8}e^{-\pi i z}(e^{2\pi i z};q)_\infty(qe^{-2\pi i z};q)_\infty(q;q)_\infty,
+\]
+and write $u:=e^{2\pi i z}$.  Set
+\begin{equation}\label{eq:jacobi-carrier}
+\mathcal J_{m,d}(\tau,z)
+:=
+\eta(\tau)^{2-4m}\frac{\vartheta_1(\tau,z)^{4m+1}}{\vartheta_1(d\tau,dz)}.
+\end{equation}
+Then $\mathcal J_{m,d}$ is a meromorphic Jacobi form of weight $1$ and index $m$ on $\Gamma_d^{\sharp}$.  Its possible poles lie on the \(d\)-torsion orbits
+\[
+z\equiv -\frac r d \pmod{\mathbb Z\tau+\mathbb Z}\qquad (0\le r\le d-1).
+\]
+Its actual poles occur precisely on the nonzero \(d\)-torsion orbits.
+On the nonzero \(d\)-torsion orbits, \(\mathcal J_{m,d}\) has simple poles, while at the zero orbit the numerator cancels the denominator pole and \(\mathcal J_{m,d}\) has a zero of order \(4m\). Moreover,
+\begin{equation}\label{eq:carrier-covering}
+\mathcal J_{m,d}(\tau,z)
+=
+q^{(m+1)/12}(q;q)_\infty^{2-4m}u^{-m}\frac{J(u;q)^{4m+1}}{J(u^d;q^d)},
+\end{equation}
+where
+\[
+J(u;q):=(u;q)_\infty(q/u;q)_\infty(q;q)_\infty.
+\]
+\end{proposition}
+
+\begin{proof}
+The Jacobi triple product gives
+\[
+\vartheta_1(\tau,z)=i q^{1/8}u^{-1/2}J(u;q),
+\]
+so \eqref{eq:carrier-covering} follows immediately from \eqref{eq:jacobi-carrier}.
+
+The elliptic transformations are
+\[
+\vartheta_1(\tau,z+1)=-\vartheta_1(\tau,z),
+\qquad
+\vartheta_1(\tau,z+\tau)=-q^{-1/2}u^{-1}\vartheta_1(\tau,z),
+\]
+and similarly
+\[
+\vartheta_1(d\tau,dz+d)=-\vartheta_1(d\tau,dz),
+\qquad
+\vartheta_1(d\tau,dz+d\tau)=-q^{-d/2}u^{-d}\vartheta_1(d\tau,dz).
+\]
+One obtains
+\[
+\mathcal J_{m,d}(\tau,z+1)=\mathcal J_{m,d}(\tau,z),
+\qquad
+\mathcal J_{m,d}(\tau,z+\tau)=q^{-m}u^{-2m}\mathcal J_{m,d}(\tau,z).
+\]
+Thus the elliptic law is that of index $m$.
+
+For the modular law, let
+\[
+\gamma=\begin{pmatrix}a&b\\ c&d_0\end{pmatrix}\in \Gamma_d^{\sharp}.
+\]
+Since $c$ is divisible by $d$, the matrix
+\[
+\gamma^{(d)}:=\begin{pmatrix}a&bd\\ c/d&d_0\end{pmatrix}
+\in SL_2(\ZZ)
+\]
+is well defined.  Both $\gamma$ and $\gamma^{(d)}$ belong to $\Gamma(24)$.  This is the reason for choosing the deliberately strong subgroup $\Gamma(24d^2)$: it kills both the eta multiplier and the odd-theta multiplier under the transformations used here; see \cite[Chapter~1]{EichlerZagier}.  More explicitly, on this subgroup the standard transformation laws for $\eta$ and $\vartheta_1$ have trivial root-of-unity multipliers, so the only remaining factors are the indicated powers of $c\tau+d_0$ and the usual quadratic exponential.  Therefore
+\[
+\eta(\gamma\tau)=(c\tau+d_0)^{1/2}\eta(\tau),
+\]
+\[
+\vartheta_1\!\left(\gamma\tau,\frac{z}{c\tau+d_0}\right)
+=
+(c\tau+d_0)^{1/2}e^{\pi i c z^2/(c\tau+d_0)}\vartheta_1(\tau,z),
+\]
+and, because $d\gamma\tau=\gamma^{(d)}(d\tau)$,
+\[
+\vartheta_1\!\left(d\gamma\tau,\frac{dz}{c\tau+d_0}\right)
+=
+(c\tau+d_0)^{1/2}e^{\pi i c d z^2/(c\tau+d_0)}\vartheta_1(d\tau,dz).
+\]
+Combining these identities yields
+\[
+\mathcal J_{m,d}\!\left(\gamma\tau,\frac{z}{c\tau+d_0}\right)
+=
+(c\tau+d_0)e^{\pi i ((4m+1)-d)c z^2/(c\tau+d_0)}\mathcal J_{m,d}(\tau,z).
+\]
+Since $(4m+1)-d=2m$, this is exactly the modular law of weight $1$ and index $m$.
+
+Finally, the denominator \(\vartheta_1(d\tau,dz)\) vanishes exactly when
+\(dz\in \mathbb Z(d\tau)+\mathbb Z\), which is equivalent to
+\[
+z\equiv -\frac{r}{d}\pmod{\mathbb Z\tau+\mathbb Z}
+\qquad (0\le r\le d-1).
+\]
+The numerator vanishes on the lattice orbit \(z\in\mathbb Z\tau+\mathbb Z\), and hence cancels the denominator zero on the zero orbit. Therefore the actual poles are simple and occur precisely on the nonzero \(d\)-torsion orbits.
+\end{proof}
+
+We will also need a small analytic justification for summing meromorphic
+kernels term by term.  The following elementary lemma ensures that, under normal
+convergence away from the poles and normal convergence of the local principal
+parts, the resulting sum is again meromorphic and has exactly the expected
+principal parts.
+
+\begin{lemma}%[Normal summation of simple principal parts]
+\label{lem:normal-simple-poles}
+Let \(U\subset\mathbb C\) be open, and let \(P\subset U\) be a discrete set.
+Suppose that \(f_n\) is meromorphic on \(U\), that every pole of every \(f_n\) lies in \(P\), and that each such pole is at most simple.  Assume that
+\(\sum_n f_n\) converges normally on compact subsets of \(U\setminus P\).
+Assume moreover that for every \(p\in P\) there is a disk \(D_p\Subset U\), with
+\(D_p\cap P=\{p\}\), such that the holomorphic functions
+\[
+        (z-p)f_n(z)
+\]
+on \(D_p\setminus\{p\}\) extend holomorphically to \(D_p\), and the extended
+series
+\[
+        \sum_n (z-p)f_n(z)
+\]
+converges normally on \(D_p\).  Then \(\sum_n f_n\) defines a meromorphic
+function on \(U\) whose poles are at most simple and contained in \(P\).  At
+\(p\), its principal part is the normally convergent sum of the principal parts
+of the \(f_n\) at \(p\).
+\end{lemma}
+
+\begin{proof}
+On \(U\setminus P\) this is just the Weierstrass theorem for normally
+convergent series of holomorphic functions.  Fix \(p\in P\).  By hypothesis,
+\[
+        (z-p)\sum_n f_n(z)=\sum_n (z-p)f_n(z)
+\]
+converges normally on \(D_p\) after holomorphic extension of the summands.
+Hence \((z-p)\sum_n f_n(z)\) is holomorphic on \(D_p\).  Therefore
+\(\sum_n f_n\) has at most a simple pole at \(p\), and the principal-part
+coefficient is obtained by evaluating the last normally convergent series at
+\(z=p\).
+\end{proof}
+
+\section{The elliptic lift}\label{sec:corrected-lift}
+
+Throughout this section we fix $m\geq 2$ and write
+\[
+d:=2m+1
+\qquad {\text {\rm and}}\qquad
+\omega:=e^{2\pi i/d}.
+\]
+The results in this section give the explicit construction summarized in
+Theorems~\ref{thm:intro-defect}--\ref{thm:intro-finite-part}.  The two cases \(x^d\neq1\) and
+\(x^d=1\) have slightly different partial-fraction data, so they are treated
+separately.
+
+
+\subsection[The case of a root of unity with x to the d not equal to 1]{The case of a root of unity with \texorpdfstring{$x^d\neq 1$}{x to the d not equal to 1}}\label{sec:rootofunitynot1}
+
+Let $x$ be a root of unity satisfying $x^d\neq 1$.  Write
+\[
+C_x:=1+x+x^2+\cdots+x^{d-1}.
+\]
+Since $x^d\neq 1$, the geometric-series identity gives
+\[
+C_x=\frac{1-x^d}{1-x}\neq 0.
+\]
+We now prove the complete structure theorem in this case. 
+Throughout, assume that $x$ is a root of unity and that $x^d\neq 1$.  Set
+\[
+\mathcal G_{d,x}(u;q):=x^{-2}\mathcal F_{d,x}(xu;q).
+\]
+For brevity we write (only in the proofs)
+\[
+X_j:=X_j^{(m)}(x;q),
+\qquad
+G:=G_d(x;q),
+\qquad
+\mathcal F_x(t):=\mathcal F_{d,x}(t;q),
+\qquad
+\mathcal G(u):=\mathcal G_{d,x}(u;q).
+\]
+
+\subsubsection{The $q$-difference equations}
+To normalize the $q$-difference equations we introduce the infinite product
+\[
+M_d(u;q):=\frac{(u^d;q^d)_\infty}{(u;q)_\infty J(u;q)^{d-3}},
+\]
+and define the normalized generating series
+\[
+K_{d,x}(u;q):=\frac{M_d(u;q)}{u}\mathcal G_{d,x}(u;q).
+\]
+
+\begin{theorem}\label{thm:general-root:iplusii}
+There exists a polynomial
+\[
+R_{d,x}(u;q)\in q^{-1}\CC[[q]][u]
+\]
+of degree at most $d-2$, with
+\[
+R_{d,x}(0;q)=-X_0^{(m)}(x;q),
+\]
+such that
+\begin{equation}\label{eq:main-functional-general}
+\mathcal G_{d,x}(qu;q)
+=
+x^2 q\frac{u^d-1}{u^{d-3}(u-1)}\mathcal G_{d,x}(u;q)
++
+\frac{q}{u^{d-3}}R_{d,x}(u;q)
+-
+C_x q\frac{u^2}{1-xu}G_d(x;q).
+\end{equation}
+For
+\begin{equation}\label{eq:def-T-general}
+T_{d,x}(u;q):=(1-xu)(1-u)R_{d,x}(u;q)-C_xu^{d-1}(1-u)G_d(x;q),
+\end{equation}
+we have
+\begin{equation}\label{eq:defect-general}
+K_{d,x}(qu;q)-x^2K_{d,x}(u;q)
+=
+\frac{M_d(u;q)}{u(1-u^d)(1-xu)}T_{d,x}(u;q).
+\end{equation}
+Moreover $T_{d,x}(u;q)$ is a polynomial in $u$ of degree at most $d$.
+\end{theorem}
+
+\begin{proof}
+    Proposition~\ref{prop:recurrence} gives, for every integer $j$,
+\begin{equation}\label{eq:recurrence-proof-general}
+\sum_{r=0}^{d-1}x^rX_{j+r-2}-q^{j-1}X_j=C_xG.
+\end{equation}
+We first extract the two boundary values needed when we sum over $j\geq 0$.
+
+For $j=1$ the $X_1$ term appears both in the finite sum and in the term being subtracted, so
+\[
+X_{-1}+xX_0+x^2X_1+\cdots+x^{d-1}X_{d-2}-X_1=C_xG,
+\]
+and therefore we have
+\begin{equation}\label{eq:Xminus1-general}
+X_{-1}=C_xG-\sum_{r=1}^{d-1}x^rX_{r-1}+X_1.
+\end{equation}
+For $j=0$, we have
+\[
+X_{-2}+xX_{-1}+x^2X_0+x^3X_1+\cdots+x^{d-1}X_{d-3}-q^{-1}X_0=C_xG.
+\]
+Substituting \eqref{eq:Xminus1-general} into this identity and simplifying gives
+\begin{equation}\label{eq:Xminus2-general}
+X_{-2}=q^{-1}X_0-xX_1+x^dX_{d-2}+(1-x)C_xG.
+\end{equation}
+
+Now multiply the general recurrence in \eqref{eq:recurrence-proof-general} by $t^j$ and sum over $j\geq 0$.  Set
+\[
+A_r(t):=\sum_{j\geq 0} X_{j+r-2}t^j
+\qquad (0\leq r\leq d-1).
+\]
+Then we have
+\[
+A_0(t)=X_{-2}+tX_{-1}+t^2\mathcal F_x(t),
+\qquad
+A_1(t)=X_{-1}+t\mathcal F_x(t),
+\]
+and for $2\leq r\leq d-1$,
+\[
+A_r(t)=t^{2-r}\left(\mathcal F_x(t)-\sum_{n=0}^{r-3}X_nt^n\right).
+\]
+Also, we have
+\[
+\sum_{j\geq 0} q^{j-1}X_jt^j=q^{-1}\mathcal F_x(qt).
+\]
+Hence, it follows that
+\[
+q^{-1}\mathcal F_x(qt)
+=
+\left(\sum_{r=0}^{d-1}x^rt^{2-r}\right)\mathcal F_x(t)
++
+B_{d,x}(t;q)
+-
+\frac{C_xG}{1-t},
+\]
+where we let
+\begin{equation}\label{eq:Bdx-general}
+B_{d,x}(t;q)
+:=
+X_{-2}+(x+t)X_{-1}-\sum_{r=2}^{d-1}x^r\sum_{n=0}^{r-3}X_n t^{n+2-r}.
+\end{equation}
+
+Now substitute $t=xu$ and divide by $x^2$.  By definition, $x^{-2}\mathcal F_x(xu)=\mathcal G(u)$.  Thus
+\begin{equation}\label{eq:G-intermediate-general}
+q^{-1}\mathcal G(qu)
+=
+x^2\left(\sum_{r=0}^{d-1}u^{2-r}\right)\mathcal G(u)
++
+x^{-2}B_{d,x}(xu;q)-x^{-2}\frac{C_xG}{1-xu}.
+\end{equation}
+We now define
+\begin{equation}\label{eq:def-R-general}
+R_{d,x}(u;q)
+:=
+ u^{d-3}\left(x^{-2}B_{d,x}(xu;q)-x^{-2}C_xG(1+xu)\right).
+\end{equation}
+Because the exponents occurring in $B_{d,x}(t;q)$ range from $3-d$ to $1$, the quantity $R_{d,x}(u;q)$ is a polynomial in $u$ of degree at most $d-2$.  The only negative power of $q$ arises from the term $q^{-1}X_0$ in \eqref{eq:Xminus2-general}, so the coefficients indeed lie in $q^{-1}\CC[[q]]$.
+
+To determine the constant term, note that the only contribution to the exponent $u^{3-d}$ in the bracket in \eqref{eq:def-R-general} comes from the summand with $r=d-1$ and $n=0$ in the double sum in \eqref{eq:Bdx-general}.  That contribution is
+\[
+-\,x^{-2}\cdot x^{d-1}X_0\cdot (xu)^{3-d}=-X_0u^{3-d}.
+\]
+Every term coming from $X_{-2}$, $(x+t)X_{-1}$, or $C_xG(1+xu)$ contributes a strictly larger power of $u$.  Therefore
+\[
+R_{d,x}(0;q)=-X_0=-X_0^{(m)}(x;q).
+\]
+Finally, we have
+\[
+\sum_{r=0}^{d-1}u^{2-r}=\frac{u^d-1}{u^{d-3}(u-1)},
+\qquad
+1+xu-\frac1{1-xu}=-\frac{x^2u^2}{1-xu}.
+\]
+Substituting these identities into \eqref{eq:G-intermediate-general} gives \eqref{eq:main-functional-general}.
+
+
+For the second part of the theorem we note that we have
+\[
+(qu^d;q^d)_\infty=\frac{(u^d;q^d)_\infty}{1-u^d},
+\qquad
+(qu;q)_\infty=\frac{(u;q)_\infty}{1-u},
+\qquad
+J(qu;q)=-u^{-1}J(u;q),
+\]
+and $d-3$ is even, it follows that
+\begin{equation}\label{eq:M-shift-general}
+M_d(qu;q)=\frac{u^{d-3}(1-u)}{1-u^d}M_d(u;q).
+\end{equation}
+Multiply \eqref{eq:main-functional-general} by $M_d(qu;q)/(qu)$.  The main term becomes
+\[
+\frac{M_d(qu;q)}{u}\cdot x^2\frac{u^d-1}{u^{d-3}(u-1)}\mathcal G(u)
+=
+x^2\frac{M_d(u;q)}{u}\mathcal G(u)=x^2K_{d,x}(u;q),
+\]
+by \eqref{eq:M-shift-general}.  The remaining two terms combine to give
+\[
+K_{d,x}(qu;q)-x^2K_{d,x}(u;q)
+=
+\frac{M_d(u;q)}{u(1-u^d)}(1-u)R_{d,x}(u;q)
+-
+C_x\frac{M_d(u;q)u^{d-2}(1-u)}{(1-u^d)(1-xu)}G.
+\]
+Factoring out $M_d(u;q)/\bigl(u(1-u^d)(1-xu)\bigr)$ yields exactly \eqref{eq:defect-general}.  The degree bound for $T_{d,x}(u;q)$ follows immediately from \eqref{eq:def-T-general}, because $R_{d,x}(u;q)$ has degree at most $d-2$.
+
+\end{proof}
+
+
+\subsubsection{Partial fraction and kernel decomposition}
+
+To solve the equation \eqref{eq:defect-general}, we introduce three families of correction kernels 
+\begin{equation}\label{eq:correction-kernels-general}
+\Psi_d^{[x]}(u;q):=\sum_{n\geq 0}x^{-2n-2}\frac{q^{-n}M_d(q^nu;q)}{u},
+\end{equation}
+\begin{equation}\label{eq:omega-r-general}
+\Omega_{d,r}^{[x]}(u;q):=\sum_{n\geq 0}x^{-2n-2}\frac{M_d(q^nu;q)}{1-\omega^rq^nu}
+\qquad (0\leq r\leq d-1),
+\end{equation}
+\begin{equation}\label{eq:omega-x-general}
+\Omega_{d,\mathrm{ext}}^{[x]}(u;q):=\sum_{n\geq 0}x^{-2n-2}\frac{M_d(q^nu;q)}{1-xq^nu}.
+\end{equation}
+
+\begin{proposition}
+    The series $\Psi_d^{[x]}(u;q),\, \Omega_{d,r}^{[x]}(u;q) $ and $\Omega_{d,\mathrm{ext}}^{[x]}(u;q)$ converge locally uniformly away from their pole sets and satisfy
+\begin{equation}\label{eq:qshift-correction-general}
+\Psi_d^{[x]}(qu;q)-x^2\Psi_d^{[x]}(u;q)=-\frac{M_d(u;q)}{u},
+\end{equation}
+\begin{equation}\label{eq:qshift-omega-r}
+\Omega_{d,r}^{[x]}(qu;q)-x^2\Omega_{d,r}^{[x]}(u;q)=-\frac{M_d(u;q)}{1-\omega^r u},
+\end{equation}
+\begin{equation}\label{eq:qshift-omega-x}
+\Omega_{d,\mathrm{ext}}^{[x]}(qu;q)-x^2\Omega_{d,\mathrm{ext}}^{[x]}(u;q)=-\frac{M_d(u;q)}{1-xu}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+    To prove convergence of the correction kernels, iterate \eqref{eq:M-shift-general}.  For every integer $n\geq 0$,
+\begin{equation}\label{eq:M-iterate-general}
+M_d(q^nu;q)
+=
+q^{\frac{(d-3)n(n-1)}2}u^{n(d-3)}\frac{(u;q)_n}{(u^d;q^d)_n}M_d(u;q).
+\end{equation}
+Since $d\geq 5$, the quadratic factor in the exponent of $q$ is positive.  Therefore the summands in \eqref{eq:correction-kernels-general}, \eqref{eq:omega-r-general}, and \eqref{eq:omega-x-general} are $\OO(|q|^{cn^2})$ for some $c>0$ on compact subsets away from the poles, because the extra factors $x^{-2n-2}$ have modulus $1$.  This proves local uniform convergence.
+
+The $q$-shift identities are immediate from an index shift.  For example,
+\[
+\Psi_d^{[x]}(qu;q)
+=
+\sum_{n\geq 0}x^{-2n-2}\frac{q^{-n}M_d(q^{n+1}u;q)}{qu}
+=
+\sum_{r\geq 1}x^{-2r}\frac{q^{-r}M_d(q^ru;q)}{u}
+=
+x^2\Psi_d^{[x]}(u;q)-\frac{M_d(u;q)}{u},
+\]
+which proves \eqref{eq:qshift-correction-general}.  The proofs of \eqref{eq:qshift-omega-r} and \eqref{eq:qshift-omega-x} are identical.
+\end{proof}
+
+
+\begin{theorem}\label{thm:general-root:iii}
+    There exist unique Laurent series
+\[
+D_{r,x}(q)\in q^{-1}\CC[[q]]\qquad (0\leq r\leq d-1),
+\qquad
+E_x(q)\in q^{-1}\CC[[q]],
+\]
+such that
+\begin{equation}\label{eq:partial-fractions-general}
+\frac{T_{d,x}(u;q)}{u(1-u^d)(1-xu)}
+=
+-\frac{X_0^{(m)}(x;q)}{u}
++
+\sum_{r=0}^{d-1}\frac{D_{r,x}(q)}{1-\omega^r u}
++
+\frac{E_x(q)}{1-xu}.
+\end{equation}
+The coefficients are given explicitly by
+\begin{equation}\label{eq:D-general-explicit}
+D_{r,x}(q)=\frac{\omega^r}{d\bigl(1-x\omega^{-r}\bigr)}T_{d,x}(\omega^{-r};q),
+\qquad
+E_x(q)=\frac{x}{1-x^{-d}}T_{d,x}(x^{-1};q).
+\end{equation}
+Finally, we have
+\begin{equation}\label{eq:Kd-decomposition-general}
+K_{d,x}(u;q)
+=
+X_0^{(m)}(x;q)\Psi_d^{[x]}(u;q)
+-
+\sum_{r=0}^{d-1}D_{r,x}(q)\Omega_{d,r}^{[x]}(u;q)
+-
+E_x(q)\Omega_{d,\mathrm{ext}}^{[x]}(u;q).
+\end{equation}
+\end{theorem}
+
+
+\begin{proof}
+    
+The denominator in \eqref{eq:defect-general} factors as
+\[
+u(1-u^d)(1-xu)=u\prod_{r=0}^{d-1}(1-\omega^ru)(1-xu).
+\]
+Since $x^d\neq 1$, the $d+2$ linear factors are pairwise distinct.  Therefore there is a unique partial-fraction decomposition of the form \eqref{eq:partial-fractions-general}.
+
+The coefficient of $1/u$ is the value at $u=0$ of the numerator, namely $T_{d,x}(0;q)=R_{d,x}(0;q)=-X_0^{(m)}(x;q)$.  This proves the first term in \eqref{eq:partial-fractions-general}.  The formulas \eqref{eq:D-general-explicit} follow by multiplying \eqref{eq:partial-fractions-general} by $1-\omega^ru$ or $1-xu$ and then setting $u=\omega^{-r}$ or $u=x^{-1}$.
+
+
+
+Now define
+\[
+\widehat K(u;q)
+:=
+K_{d,x}(u;q)
+-
+X_0^{(m)}(x;q)\Psi_d^{[x]}(u;q)
++
+\sum_{r=0}^{d-1}D_{r,x}(q)\Omega_{d,r}^{[x]}(u;q)
++
+E_x(q)\Omega_{d,\mathrm{ext}}^{[x]}(u;q).
+\]
+Using \eqref{eq:defect-general}, \eqref{eq:partial-fractions-general}, and the three $q$-shift identities just proved, we obtain
+\[
+\widehat K(qu;q)=x^2\widehat K(u;q).
+\]
+It remains to show that this twisted $q$-periodic remainder vanishes identically.
+
+By Lemma~\ref{lem:F-meromorphic}, we have
+\[
+\mathcal G(q^Mu;q)
+=
+x^{-2}\sum_{n\geq 0}\frac{q^{n^2}G_d(xq^n;q)}{1-xuq^{n+M}}.
+\]
+The series $\sum_{n\geq 0} q^{n^2}G_d(xq^n;q)$ converges absolutely.  For fixed $u$ away from the poles there is $M_0$ such that $|1-xuq^{n+M}|^{-1}\leq 2$ for every $n\geq 0$ and $M\geq M_0$.  Dominated convergence therefore yields
+\[
+\mathcal G(q^Mu;q)\longrightarrow x^{-2}X_0^{(m)}(x;q)
+\qquad (M\to\infty).
+\]
+On the other hand, \eqref{eq:M-iterate-general} implies
+\[
+\frac{M_d(q^Mu;q)}{q^M u}\longrightarrow 0
+\qquad (M\to\infty),
+\]
+because $d-3\geq 2$.  Hence, we have
+\[
+K_{d,x}(q^Mu;q)=\frac{M_d(q^Mu;q)}{q^Mu}\mathcal G(q^Mu;q)\longrightarrow 0.
+\]
+The same estimate shows that
+\[
+\Psi_d^{[x]}(q^Mu;q)
+=
+x^{2M}\sum_{r\geq M}x^{-2r-2}\frac{q^{-r}M_d(q^ru;q)}{u}
+\longrightarrow 0,
+\]
+and similarly
+\[
+\Omega_{d,r}^{[x]}(q^Mu;q)\longrightarrow 0,
+\qquad
+\Omega_{d,\mathrm{ext}}^{[x]}(q^Mu;q)\longrightarrow 0.
+\]
+Therefore, it follows that
+\[
+\widehat K(q^Mu;q)\longrightarrow 0.
+\]
+Since $\widehat K(q^Mu;q)=x^{2M}\widehat K(u;q)$ for every $M$, we conclude that
+\[
+\widehat K(u;q)=x^{-2M}\widehat K(q^Mu;q)\longrightarrow 0,
+\]
+and hence $\widehat K(u;q)=0$ identically.  This proves \eqref{eq:Kd-decomposition-general}.
+
+\end{proof}
+
+
+\subsubsection{Elliptic transformation laws and theta decomposition}
+Write $u=e^{2\pi i w}$ and define
+\[
+P_d(u;q):=u^{-m-1}J(-u;q)^{d+1}\frac{(q/u;q)_\infty}{(q^d/u^d;q^d)_\infty}
+\]
+and the generating series
+\[
+\Phi_{d,x}(\tau,w):=P_d(u;q)\mathcal G_{d,x}(u;q),
+\]
+Then $\Phi_{d,x}(\tau,w)$ satisfies the following elliptic transformations.
+\begin{proposition}\label{prop:ellipticPhi}
+We have
+\[
+\Phi_{d,x}(\tau,w+1)=\Phi_{d,x}(\tau,w),
+\]
+and
+    \begin{equation}\label{eq:Phi-open-elliptic-general}
+\begin{aligned}
+\Phi_{d,x}(\tau,w+\tau)
+&=
+x^2q^{-m}u^{-2m}\Phi_{d,x}(\tau,w)\\
+&\quad+
+q^{-m}u^{-2m}P_d(u;q)
+\Biggl(
+- X_0^{(m)}(x;q)
++
+\sum_{r=0}^{d-1}D_{r,x}(q)\frac{u}{1-\omega^ru}\\
+&\qquad\qquad+
+E_x(q)\frac{u}{1-xu}
+\Biggr).
+\end{aligned}
+\end{equation}
+\end{proposition}
+    
+\begin{proof}
+      First note that $w\mapsto w+1$ leaves $u=e^{2\pi i w}$ unchanged.
+      Next we compute the $q$-shift of $P_d(u;q)$.  Since
+\[
+J(-qu;q)=u^{-1}J(-u;q)
+\]
+and
+\[
+\frac{(q/(qu);q)_\infty}{(q^d/(q^d u^d);q^d)_\infty}
+=
+\frac{(1/u;q)_\infty}{(1/u^d;q^d)_\infty}
+=u^{d-1}\frac{1-u}{1-u^d}\frac{(q/u;q)_\infty}{(q^d/u^d;q^d)_\infty},
+\]
+we obtain
+\begin{equation}\label{eq:P-shift-general}
+P_d(qu;q)=q^{-m-1}u^{-2}\frac{1-u}{1-u^d}P_d(u;q).
+\end{equation}
+Multiply \eqref{eq:main-functional-general} by $P_d(qu;q)$.  Using \eqref{eq:P-shift-general} and the identity $d=2m+1$, the coefficient of $\mathcal G(u;q)$ simplifies to
+\[
+P_d(qu;q)\cdot x^2 q\frac{u^d-1}{u^{d-3}(u-1)}
+=
+x^2q^{-m}u^{-2m}P_d(u;q).
+\]
+The remaining terms combine exactly as in the proof of part~(ii), giving
+\[
+\Phi_{d,x}(\tau,w+\tau)
+=
+x^2q^{-m}u^{-2m}\Phi_{d,x}(\tau,w)
++
+q^{-m}u^{-2m}P_d(u;q)\frac{T_{d,x}(u;q)}{(1-u^d)(1-xu)}.
+\]
+Insert the partial-fraction decomposition \eqref{eq:partial-fractions-general} and multiply by $u$. This yields \eqref{eq:Phi-open-elliptic-general}. 
+\end{proof}
+
+
+We introduce the corresponding Appell-type sums
+\begin{align}\label{eq:allappelltypesums}
+\mathcal B_d^{[x]}(\tau,w)
+&:=
+\sum_{n\geq 0} x^{-2n-2}q^{mn^2}u^{2mn}P_d(q^nu;q),\\
+\mathcal A_{d,r}^{[x]}(\tau,w)
+&:=
+\sum_{n\geq 0}
+x^{-2n-2}q^{mn^2+n}u^{2mn+1}
+\frac{P_d(q^n u;q)}{1-\omega^r q^n u}
+\qquad (0\le r\le d-1),\\
+\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w)
+&:=
+\sum_{n\geq 0}
+x^{-2n-2}q^{mn^2+n}u^{2mn+1}
+\frac{P_d(q^n u;q)}{1-xq^n u}.
+\end{align}
+\begin{proposition}\label{prop:allappelltypesums}
+    The series \eqref{eq:allappelltypesums} converge locally uniformly away from their pole sets, are invariant under $w\mapsto w+1$ and satisfy
+\begin{align*}
+\mathcal B_d^{[x]}(\tau,w+\tau)
+&=
+x^2q^{-m}u^{-2m}\mathcal B_d^{[x]}(\tau,w)-q^{-m}u^{-2m}P_d(u;q),\\
+\mathcal A_{d,r}^{[x]}(\tau,w+\tau)
+&=
+x^2q^{-m}u^{-2m}\mathcal A_{d,r}^{[x]}(\tau,w)-q^{-m}u^{-2m}\frac{uP_d(u;q)}{1-\omega^ru},\\
+\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w+\tau)
+&=
+x^2q^{-m}u^{-2m}\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w)-q^{-m}u^{-2m}\frac{uP_d(u;q)}{1-xu}.
+\end{align*}
+The possible poles of $\Phi_{d,x}$, $\mathcal B_d^{[x]}$, $\mathcal A_{d,r}^{[x]}$, $\mathcal A_{d,\mathrm{ext}}^{[x]}$, and $\mathcal H_{d,x}$ are at most simple and are contained in the torsion orbits represented by
+\[
+\Sigma_{d,x}:=\left\{-\frac{r}{d}:0\leq r\leq d-1\right\}\cup\{-\alpha\}
+\subset \QQ/\ZZ,
+\]
+where $x=e^{2\pi i\alpha}$ and $0\leq \alpha<1$.
+
+\end{proposition}
+
+\begin{proof}
+    First note that $w\mapsto w+1$ leaves $u=e^{2\pi i w}$ unchanged, so every function of $u$ alone is $1$-periodic.
+
+Using the iterate
+\[
+P_d(q^n u;q)
+=
+q^{-n(m+1)-n(n-1)}u^{-2n}
+\frac{(u;q)_n}{(u^d;q^d)_n}P_d(u;q),
+\]
+the \(n\)-th summand of \(\mathcal B_d^{[x]}\) is bounded, away from the pole set, by a constant times
+\[
+|q|^{(m-1)n^2-mn}.
+\]
+For the \(A\)-kernels, we obtain the bound
+\[
+|q|^{(m-1)n^2-(m-1)n}.
+\]
+Since \(m\geq 2\), these are positive quadratic exponents in \(n\), apart from finitely many initial terms. Hence all three series converge locally uniformly away from their pole sets. 
+
+
+
+The shift identity for \(\mathcal B_d^{[x]}\) is obtained by the usual index shift:
+\[
+\mathcal B_d^{[x]}(\tau,w+\tau)
+=
+\sum_{n\geq 0}
+x^{-2n-2}q^{mn^2}(qu)^{2mn}P_d(q^{n+1}u;q).
+\]
+Since \(mn^2+2mn=m(n+1)^2-m\), the substitution \(s=n+1\) gives
+\[
+\mathcal B_d^{[x]}(\tau,w+\tau)
+=
+q^{-m}u^{-2m}
+\sum_{s\geq 1}
+x^{-2s}q^{ms^2}u^{2ms}P_d(q^s u;q).
+\]
+Comparing this with \(x^2\mathcal B_d^{[x]}(\tau,w)\) gives
+\[
+\mathcal B_d^{[x]}(\tau,w+\tau)
+=
+x^2q^{-m}u^{-2m}\mathcal B_d^{[x]}(\tau,w)
+-
+q^{-m}u^{-2m}P_d(u;q).
+\]
+
+For \(\mathcal A_{d,r}^{[x]}\),  we have
+\[
+\mathcal A_{d,r}^{[x]}(\tau,w+\tau)
+=
+\sum_{n\geq 0}
+x^{-2n-2}q^{mn^2+n}(qu)^{2mn+1}
+\frac{P_d(q^{n+1}u;q)}{1-\omega^r q^{n+1}u}.
+\]
+Now, we note that
+\[
+mn^2+n+2mn+1=m(n+1)^2+(n+1)-m.
+\]
+Putting \(s=n+1\), we obtain
+\[
+\mathcal A_{d,r}^{[x]}(\tau,w+\tau)
+=
+q^{-m}u^{-2m}
+\sum_{s\geq 1}
+x^{-2s}q^{ms^2+s}u^{2ms+1}
+\frac{P_d(q^s u;q)}{1-\omega^r q^s u}.
+\]
+Comparing this with \(x^2\mathcal A_{d,r}^{[x]}(\tau,w)\) gives
+\[
+\mathcal A_{d,r}^{[x]}(\tau,w+\tau)
+=
+x^2q^{-m}u^{-2m}\mathcal A_{d,r}^{[x]}(\tau,w)
+-
+q^{-m}u^{-2m}
+\frac{uP_d(u;q)}{1-\omega^r u}.
+\]
+The proof for \(\mathcal A_{d,\mathrm{ext}}^{[x]}\) is identical, with \(1-\omega^r q^n u\) replaced by \(1-xq^n u\). Thus
+\[
+\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w+\tau)
+=
+x^2q^{-m}u^{-2m}\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w)
+-
+q^{-m}u^{-2m}
+\frac{uP_d(u;q)}{1-xu}.
+\]
+
+Finally, we justify the pole assertion, including the order of the poles.  By Lemma~\ref{lem:F-meromorphic}, the factor \(\mathcal G_{d,x}(u;q)\) has at most simple poles at the points \(u=x^{-1}q^{-n}\), hence on the orbit \(w\equiv-\alpha\).  The product formula for \(P_d(u;q)\) shows that \(P_d\) has at most simple poles on the nonzero standard \(d\)-torsion orbits; the possible zero-orbit poles are cancelled by the factor \((q/u;q)_\infty\).  Since \(x^d\neq 1\), the extra orbit \(w\equiv-\alpha\) is disjoint from the standard \(d\)-torsion orbits, so the possible poles of \(\Phi_{d,x}=P_d\mathcal G_{d,x}\) are at most simple.
+
+It remains to check that the one-sided correction kernels do not create higher-order poles by summing infinitely many shifted summands on the same elliptic orbit.  Fix a point \(w_0\) on one of the listed torsion orbits and take a small disk \(D\) in the \(w\)-plane meeting no other listed orbit.  Each summand of \(\mathcal B_d^{[x]}\), \(\mathcal A_{d,r}^{[x]}\), and \(\mathcal A_{d,\mathrm{ext}}^{[x]}\) has at most a simple pole in \(D\).  After multiplication by \(w-w_0\), the possibly vanishing linear denominator at \(w_0\) is cancelled, while all other denominator factors are bounded away from zero on a slightly smaller disk.  The estimates already obtained above,
+\[
+        O\!\left(|q|^{(m-1)n^2-mn}\right)
+        \quad\text{for }\mathcal B_d^{[x]},
+        \qquad
+        O\!\left(|q|^{(m-1)n^2-(m-1)n}\right)
+        \quad\text{for the }\mathcal A\text{-kernels},
+\]
+therefore also bound the multiplied summands \((w-w_0)\) times each summand.  These bounds are summable because \(m\ge2\).  Lemma~\ref{lem:normal-simple-poles} implies that the kernels have at most simple poles on the stated orbits and no other poles.  Since \(\mathcal H_{d,x}\) is a finite linear combination of these functions and \(\Phi_{d,x}\), it also has at most simple poles on the set \(\Sigma_{d,x}\).  This proves the last assertion.
+\end{proof}
+
+
+\begin{corollary}
+If we define
+\begin{equation}\label{eq:H-general}
+\begin{aligned}
+\mathcal H_{d,x}(\tau,w)
+:={}&
+\Phi_{d,x}(\tau,w)
+-
+X_0^{(m)}(x;q)\mathcal B_d^{[x]}(\tau,w)\\
+&+
+\sum_{r=0}^{d-1}D_{r,x}(q)\mathcal A_{d,r}^{[x]}(\tau,w)
++
+E_x(q)\mathcal A_{d,\mathrm{ext}}^{[x]}(\tau,w).
+\end{aligned}
+\end{equation}
+then
+\begin{equation}\label{eq:H-elliptic-general}
+\mathcal H_{d,x}(\tau,w+1)=\mathcal H_{d,x}(\tau,w),
+\qquad
+\mathcal H_{d,x}(\tau,w+\tau)=x^2q^{-m}u^{-2m}\mathcal H_{d,x}(\tau,w).
+\end{equation}
+\end{corollary}
+\begin{proof}
+    Compare the defect in \eqref{eq:Phi-open-elliptic-general} with the three kernel identities.  The defects cancel term by term, so the function $\mathcal H_{d,x}$ defined in \eqref{eq:H-general} satisfies \eqref{eq:H-elliptic-general}.
+\end{proof}
+
+\begin{theorem}\label{thm:general-root:ivplusv}
+ We let
+\[
+\lambda_x:=\frac{\alpha}{m},
+\qquad
+\widetilde{\mathcal H}_{d,x}(\tau,w):=\mathcal H_{d,x}(\tau,w+\lambda_x),
+\]
+so that $\widetilde{\mathcal H}_{d,x}$ satisfies the standard index-$m$ elliptic law
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,w+1)=\widetilde{\mathcal H}_{d,x}(\tau,w),
+\qquad
+\widetilde{\mathcal H}_{d,x}(\tau,w+\tau)=q^{-m}u^{-2m}\widetilde{\mathcal H}_{d,x}(\tau,w).
+\]
+Let $\widetilde\Sigma_{d,x}:=\Sigma_{d,x}-\lambda_x\subset \QQ/\ZZ$.  The possible poles of $\widetilde{\mathcal H}_{d,x}$ are at most simple and are contained in the orbits represented by $\widetilde\Sigma_{d,x}$.  For each $\beta\in\widetilde\Sigma_{d,x}$, write
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,\beta+\varepsilon)
+=
+\frac{c_{\beta,x}(\tau)}{2\pi i\varepsilon}+\OO(1)
+\qquad (\varepsilon\to 0).
+\]
+The functions \(c_{\beta,x}(\tau)\) are holomorphic in \(\tau\).  
+%The elliptic transformation law propagates these principal parts to every point in the corresponding lattice orbit, so it is enough to subtract one Appell--Lerch kernel for each representative \(\beta\in\widetilde\Sigma_{d,x}\).
+Define
+\begin{equation}\label{eq:H-polar-general}
+\widetilde{\mathcal H}_{d,x}^{P,\mathrm{loc}}(\tau,w)
+:=
+\sum_{\beta\in\widetilde\Sigma_{d,x}}c_{\beta,x}(\tau)A_{m,\beta}(\tau,w).
+\end{equation}
+Then the difference
+\begin{equation}\label{eq:H-finite-general}
+\widetilde{\mathcal H}_{d,x}^{F,\mathrm{loc}}(\tau,w)
+:=
+\widetilde{\mathcal H}_{d,x}(\tau,w)-\widetilde{\mathcal H}_{d,x}^{P,\mathrm{loc}}(\tau,w)
+\end{equation}
+is holomorphic in $w$ and satisfies the standard elliptic law above. Hence, there exist unique holomorphic coefficient functions $h_{\ell,x}(\tau)$ such that
+\begin{equation}\label{eq:H-theta-general}
+\widetilde{\mathcal H}_{d,x}^{F,\mathrm{loc}}(\tau,w)
+=
+\sum_{\ell\, (\mathrm{mod}\,2m)} h_{\ell,x}(\tau)\,\vartheta_{m,\ell}(\tau,w).
+\end{equation}
+Equivalently, the unshifted holomorphic part $\mathcal H_{d,x}^{F,\mathrm{loc}}(\tau,w):=\widetilde{\mathcal H}_{d,x}^{F,\mathrm{loc}}(\tau,w-\lambda_x)$ satisfies
+\[
+\mathcal H_{d,x}^{F,\mathrm{loc}}(\tau,w)
+=
+\sum_{\ell\, (\mathrm{mod}\,2m)} h_{\ell,x}(\tau)\,\vartheta_{m,\ell}\!\left(\tau,w-\frac{\alpha}{m}\right).
+\]
+\end{theorem}
+    
+
+\begin{proof}
+Let $\lambda_x:=\alpha/m$ and define
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,w):=\mathcal H_{d,x}(\tau,w+\lambda_x).
+\]
+Because $\mathcal H_{d,x}$ satisfies \eqref{eq:H-elliptic-general} and $x=e^{2\pi i\alpha}$, we obtain
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,w+\tau)
+=
+x^2e^{-4\pi i m\lambda_x}q^{-m}u^{-2m}\widetilde{\mathcal H}_{d,x}(\tau,w)
+=
+q^{-m}u^{-2m}\widetilde{\mathcal H}_{d,x}(\tau,w),
+\]
+while $\widetilde{\mathcal H}_{d,x}(\tau,w+1)=\widetilde{\mathcal H}_{d,x}(\tau,w)$ remains immediate.  Thus $\widetilde{\mathcal H}_{d,x}$ satisfies the standard index-$m$ elliptic law.  Its possible poles are contained in the translated constant torsion orbits represented by $\widetilde\Sigma_{d,x}=\Sigma_{d,x}-\lambda_x$.
+
+Proposition~\ref{prop:local-polar-subtraction} therefore applies directly to $\widetilde{\mathcal H}_{d,x}$, giving \eqref{eq:H-polar-general}, \eqref{eq:H-finite-general}, and the theta decomposition \eqref{eq:H-theta-general}.  Pulling back by the translation $w\mapsto w-\lambda_x$ yields the equivalent shifted-theta expansion for $\mathcal H_{d,x}^{F,\mathrm{loc}}$.
+\end{proof}
+
+\subsection[The d-th torsion slice x to the d equals 1]{\texorpdfstring{The $d$-th torsion slice $x^d=1$}{The d-th torsion slice x to the d equals 1}}
+
+We now turn to the case that is most directly relevant to the higher Dyson specialization.  Here the extra factor $1-xu$ cancels from the defect.  The specialization $x=1$ gives a  torsion-pole theorem, whereas the nontrivial $d$-th roots of unity retain a residual $x^2$-twist in the elliptic law.
+
+\begin{corollary}\label{cor:torsion-slice}
+Let $x$ be a $d$-th root of unity.
+
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item There exists a polynomial $R_{d,x}(u;q)\in q^{-1}\CC[[q]][u]$ of degree at most $d-2$ with constant term
+\[
+R_{d,x}(0;q)=-X_0^{(m)}(x;q),
+\]
+such that
+\[
+\mathcal G_{d,x}(qu;q)
+=
+x^2q\frac{u^d-1}{u^{d-3}(u-1)}\mathcal G_{d,x}(u;q)
++
+\frac{q}{u^{d-3}}R_{d,x}(u;q)
+-
+\delta_{x,1}\,d q\frac{u^2}{1-u}G_d(1;q),
+\]
+where $\delta_{x,1}$ is $1$ if $x=1$ and $0$ otherwise.
+
+The normalized series 
+\[
+K_{d,x}(u;q):=\frac{M_d(u;q)}{u}\mathcal G_{d,x}(u;q),\qquad M_d(u;q):=\frac{(u^d;q^d)_\infty}{(u;q)_\infty J(u;q)^{d-3}},
+\]
+satisfies
+\begin{equation}\label{eq:defect-torsion-slice}
+K_{d,x}(qu;q)-x^2K_{d,x}(u;q)
+=
+\frac{M_d(u;q)}{u(1-u^d)}S_{d,x}(u;q),
+\end{equation}
+where
+\[
+S_{d,x}(u;q):=
+\begin{cases}
+(1-u)R_{d,1}(u;q)-du^{d-1}G_d(1;q), & x=1,\\[4pt]
+(1-u)R_{d,x}(u;q), & x\neq 1,\ x^d=1.
+\end{cases}
+\]
+
+\item There exist unique Laurent series $D_{r,x}(q)\in q^{-1}\CC[[q]]$ $(0\leq r\leq d-1)$ such that $S_{d,x}$ admits the partial fraction decomposition
+\[
+\frac{S_{d,x}(u;q)}{u(1-u^d)}
+=
+-\frac{X_0^{(m)}(x;q)}{u}
++
+\sum_{r=0}^{d-1}\frac{D_{r,x}(q)}{1-\omega^r u},
+\]
+with
+\[
+D_{r,1}(q)=\frac{\omega^r}{d}S_{d,1}(\omega^{-r};q),\quad \text{and} \quad 
+D_{r,x}(q)=\frac{\omega^r}{d}(1-\omega^{-r})R_{d,x}(\omega^{-r};q).
+\]
+The function $K_{d,x}(u;q)$ then decomposes as
+\begin{equation}\label{eq:Kd-torsion-slice}
+K_{d,x}(u;q)
+=
+X_0^{(m)}(x;q)\Psi_d^{[x]}(u;q)-\sum_{r=0}^{d-1}D_{r,x}(q)\Omega_{d,r}^{[x]}(u;q),
+\end{equation}
+where
+\[
+\Psi_d^{[x]}(u;q):=\sum_{n\geq 0}x^{-2n-2}\frac{q^{-n}M_d(q^nu;q)}{u},
+\qquad
+\Omega_{d,r}^{[x]}(u;q):=\sum_{n\geq 0}x^{-2n-2}\frac{M_d(q^nu;q)}{1-\omega^rq^nu}.
+\]
+For $x=1$ these kernels reduce to the untwisted kernels $\Psi_d$ and $\Omega_{d,r}$ from Theorem~\ref{thm:general-root:iii}.
+
+\item Let $\Phi_{d,x}(\tau,w):=P_d(u;q)\mathcal G_{d,x}(u;q)$. All possible poles of 
+\[
+\mathcal H_{d,x}(\tau,w):=\Phi_{d,x}(\tau,w)-X_0^{(m)}(x;q)\mathcal B_d^{[x]}(\tau,w)+\sum_{r=0}^{d-1}D_{r,x}(q)\mathcal A_{d,r}^{[x]}(\tau,w).
+\]
+are at most simple and are contained in the standard \(d\)-torsion orbits
+\[
+w\equiv -\frac{r}{d}\pmod{\ZZ\tau+\ZZ}
+\qquad (0\leq r\leq d-1).
+\]
+Moreover, $\mathcal H_{d,x}$ satisfies
+\[
+\mathcal H_{d,x}(\tau,w+1)=\mathcal H_{d,x}(\tau,w),
+\qquad
+\mathcal H_{d,x}(\tau,w+\tau)=x^2q^{-m}u^{-2m}\mathcal H_{d,x}(\tau,w).
+\]
+Here \(\mathcal B_d^{[x]}\) is the kernel from Proposition~\ref{prop:allappelltypesums}, and
+\(\mathcal A_{d,r}^{[x]}\) denotes the corrected kernel
+\[
+\mathcal A_{d,r}^{[x]}(\tau,w)
+:=
+\sum_{n\geq 0}
+x^{-2n-2}q^{mn^2+n}u^{2mn+1}
+\frac{P_d(q^n u;q)}{1-\omega^r q^n u}.
+\]
+Its shifted holomorphic part
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,w):=\mathcal H_{d,x}(\tau,w+\lambda_x), \quad x=e^{2\pi i\alpha}, \, \lambda_x:=\alpha/m
+\]
+satisfies
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,w+1)=\widetilde{\mathcal H}_{d,x}(\tau,w),
+\qquad
+\widetilde{\mathcal H}_{d,x}(\tau,w+\tau)=q^{-m}u^{-2m}\widetilde{\mathcal H}_{d,x}(\tau,w).
+\]
+We let
+\[
+\widetilde\Sigma_{d,x}:=
+\left\{-\frac rd:0\le r\le d-1\right\}-\lambda_x
+\subset \QQ/\ZZ.
+\]
+For each \(\beta\in\widetilde\Sigma_{d,x}\), define \(c_{\beta,x}(\tau)\) by
+\[
+\widetilde{\mathcal H}_{d,x}(\tau,\beta+\varepsilon)
+=
+\frac{c_{\beta,x}(\tau)}{2\pi i\,\varepsilon}+\OO(1)
+\qquad (\varepsilon\to0).
+\]
+The functions \(c_{\beta,x}(\tau)\) are holomorphic in \(\tau\).
+Set
+\[
+\widetilde{\mathcal H}_{d,x}^{P,\mathrm{loc}}(\tau,w)
+:=
+\sum_{\beta\in\widetilde\Sigma_{d,x}}c_{\beta,x}(\tau)A_{m,\beta}(\tau,w),
+\qquad
+\widetilde{\mathcal H}_{d,x}^{F,\mathrm{loc}}
+:=
+\widetilde{\mathcal H}_{d,x}
+-
+\widetilde{\mathcal H}_{d,x}^{P,\mathrm{loc}}.
+\]
+Then \(\widetilde{\mathcal H}_{d,x}^{F,\mathrm{loc}}\) is holomorphic in \(w\) and has the theta decomposition
+\begin{equation}\label{eq:torsion-theta-remainder}
+\widetilde{\mathcal H}_{d,x}^{F,\mathrm{loc}}(\tau,w)
+=
+\sum_{\ell\, (\mathrm{mod}\,2m)} h_{\ell,x}(\tau)\vartheta_{m,\ell}(\tau,w).
+\end{equation}
+Equivalently, $
+\mathcal H_{d,x}^{F,\mathrm{loc}}(\tau,w)
+=
+\sum_{\ell\, (\mathrm{mod}\,2m)} h_{\ell,x}(\tau)\vartheta_{m,\ell}\!\left(\tau,w-\frac{\alpha}{m}\right).
+$
+
+\item The nonzero part of the standard \(d\)-torsion pole set in
+part~\textnormal{(iii)} is carried by the explicit Jacobi form
+\(\mathcal J_{m,d}(\tau,w)\) from Proposition~\ref{prop:jacobi-carrier}.
+The zero orbit, when it occurs, is accounted for by the local
+Appell--Lerch polar subtraction.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+If $x=1$, then Theorems~\ref{thm:general-root:iplusii}, \ref{thm:general-root:iii} and \ref{thm:general-root:ivplusv} do not apply because the factor $1-xu$ is identical with $1-u$; nevertheless the proofs of these theorems go through verbatim with $x=1$.  Since $x^2=1$ in this case, the only difference is that the bracket in \eqref{eq:def-T-general} factors as
+\[
+T_{d,1}(u;q)=(1-u)\bigl((1-u)R_{d,1}(u;q)-du^{d-1}G_d(1;q)\bigr)=(1-u)S_{d,1}(u;q),
+\]
+so one cancels a factor $1-u$ and arrives at \eqref{eq:defect-torsion-slice}.  The untwisted kernels in part~(iii) are exactly the specializations $\Psi_d^{[1]}=\Psi_d$ and $\Omega_{d,r}^{[1]}=\Omega_{d,r}$.
+
+If $x\neq 1$ and $x^d=1$, then $C_x=0$, so \eqref{eq:main-functional-general} immediately reduces to
+\[
+\mathcal G_{d,x}(qu;q)
+=
+x^2q\frac{u^d-1}{u^{d-3}(u-1)}\mathcal G_{d,x}(u;q)
++
+\frac{q}{u^{d-3}}R_{d,x}(u;q).
+\]
+In this case, we have
+\[
+T_{d,x}(u;q)=(1-xu)(1-u)R_{d,x}(u;q),
+\]
+and because $1-xu$ is one of the linear factors of $1-u^d$, the factor $1-xu$ cancels from the defect.  This gives \eqref{eq:defect-torsion-slice} with $S_{d,x}(u;q)=(1-u)R_{d,x}(u;q)$.  The partial fractions and the decomposition \eqref{eq:Kd-torsion-slice} are then proved exactly as in Theorem~\ref{thm:general-root:iii}, except that the additional kernel $\Omega_{d,\mathrm{ext}}^{[x]}$ is absent.
+
+The same specialization also removes the extra orbit from the pole set, because \(x=e^{2\pi i\alpha}\) with \(\alpha\in \frac1d\ZZ/\ZZ\), so the orbit \(w\equiv -\alpha\) is already one of the standard \(d\)-torsion orbits.  The simple-pole argument in the proof of Theorem~\ref{thm:general-root:ivplusv}, based on Lemma~\ref{lem:normal-simple-poles}, applies verbatim after the cancellation of the extra factor \(1-xu\).  Hence the meromorphic lift has at most simple poles only on the standard \(d\)-torsion pole set, and it satisfies the twisted law
+\[
+\mathcal H_{d,x}(\tau,w+\tau)=x^2q^{-m}u^{-2m}\mathcal H_{d,x}(\tau,w).
+\]
+Translating by \(\lambda_x=\alpha/m\) removes this residual constant twist.  Proposition~\ref{prop:local-polar-subtraction} then gives the stated local Appell--Lerch subtraction and the theta decomposition in \eqref{eq:torsion-theta-remainder}.
+
+Finally, Proposition~\ref{prop:jacobi-carrier} shows that the nonzero part of the standard \(d\)-torsion pole set is carried by the explicit Jacobi form \(\mathcal J_{m,d}(\tau,w)\); the zero orbit is accounted for by the local Appell--Lerch subtraction.
+\end{proof}
+
+
+\subsection*{Proofs of Theorems~\ref{thm:intro-defect}--\ref{thm:intro-finite-part}}
+
+\begin{proof}[Proof of Theorem~\ref{thm:intro-defect}]
+Assume first that \(x^d\neq1\).  The existence of the polynomial
+\(R_{d,x}\), the degree bound, and the value \(R_{d,x}(0;q)=-X_0^{(m)}(x;q)\)
+are exactly Theorem~\ref{thm:general-root:iplusii}.  In this case
+\(Q_{d,x}=T_{d,x}\), so the partial fraction identity
+\eqref{eq:intro-partial-fraction} is Theorem~\ref{thm:general-root:iii}.
+The normal convergence of the kernels in \eqref{eq:intro-B-kernel},
+\eqref{eq:intro-Ar-kernel}, and \eqref{eq:intro-Aext-kernel} is proved in
+Theorem~\ref{thm:general-root:ivplusv}.
+
+If \(x^d=1\), the same polynomial and partial-fraction statements follow from
+Corollary~\ref{cor:torsion-slice}\textnormal{(i)--(iii)}.  For \(x=1\), the
+term
+\(C_xq u^2(1-xu)^{-1}G_d(x;q)\) in \eqref{eq:intro-R-defining-equation} is
+\(dqu^2(1-u)^{-1}G_d(1;q)\).  For \(x\neq1\) with \(x^d=1\), one has
+\(C_x=0\).  Thus \eqref{eq:intro-R-defining-equation} is the same functional
+equation as in Corollary~\ref{cor:torsion-slice}\textnormal{(i)}.  In the
+torsion case \(Q_{d,x}=S_{d,x}\), so \eqref{eq:intro-partial-fraction} is
+Corollary~\ref{cor:torsion-slice}\textnormal{(iii)}.  The convergence of the
+remaining correction kernels follows from
+Corollary~\ref{cor:torsion-slice}\textnormal{(iv)}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:intro-corrected-lift}]
+For \(x^d\neq1\), the identities in \eqref{eq:intro-H-twisted-new}, the
+meromorphy of \(\mathcal H_{d,x}\), and the possible-pole statement are
+Theorem~\ref{thm:general-root:ivplusv}.  The standard torsion orbits
+are represented by \(-r/d\), \(0\le r\le d-1\), and the additional denominator
+\(1-xq^n u\) gives the orbit represented by \(-\alpha\).  For \(x^d=1\),
+Corollary~\ref{cor:torsion-slice}\textnormal{(iv)} gives the same elliptic
+identities and shows that the extra orbit coincides with one of the standard
+\(d\)-torsion orbits.  This is precisely the set \(\Sigma_{d,x}\) in
+\eqref{eq:intro-Sigma-new}.  In both cases the possible poles are at most
+simple by the normal-convergence argument in
+Proposition~\ref{prop:allappelltypesums}, using
+Lemma~\ref{lem:normal-simple-poles}.
+
+It remains to remove the constant twist.  Let \(\lambda_x=\alpha/m\).  Since
+\(w\mapsto w+1\) leaves \(u\) unchanged, \eqref{eq:intro-H-twisted-new} gives
+\(\widetilde{\mathcal H}_{d,x}(\tau,w+1)=\widetilde{\mathcal H}_{d,x}(\tau,w)\).
+For the \(\tau\)-translation, the elliptic variable at \(w+\lambda_x\) is
+\(e^{2\pi i\lambda_x}u\).  Therefore
+\[
+\begin{aligned}
+\widetilde{\mathcal H}_{d,x}(\tau,w+\tau)
+&=\mathcal H_{d,x}(\tau,w+\lambda_x+\tau)\\
+&=x^2q^{-m}\bigl(e^{2\pi i\lambda_x}u\bigr)^{-2m}
+  \mathcal H_{d,x}(\tau,w+\lambda_x)\\
+&=x^2e^{-4\pi i m\lambda_x}q^{-m}u^{-2m}
+  \widetilde{\mathcal H}_{d,x}(\tau,w).
+\end{aligned}
+\]
+Because \(x=e^{2\pi i\alpha}\) and \(m\lambda_x=\alpha\), the scalar
+\(x^2e^{-4\pi i m\lambda_x}\) is \(1\).  This proves
+\eqref{eq:intro-H-untwisted-new}.  Translating the variable by \(\lambda_x\)
+translates the possible orbit representatives by \(-\lambda_x\), giving
+\eqref{eq:intro-Sigma-tilde-new}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:intro-finite-part}]
+By Theorem~\ref{thm:intro-corrected-lift}, the function
+\(\widetilde{\mathcal H}_{d,x}\) satisfies the standard index-\(m\) elliptic
+law and has possible poles at most simple on the finite set of constant
+torsion orbits represented by \(\widetilde\Sigma_{d,x}\).  The construction of
+\(\mathcal H_{d,x}\) from normally convergent products and Appell--Lerch type
+series is locally uniform away from those possible poles, so
+\(\widetilde{\mathcal H}_{d,x}\) is jointly meromorphic in \((\tau,w)\).
+Proposition~\ref{prop:local-polar-subtraction} applies and shows that the
+coefficients \(c_{\beta,x}(\tau)\) are holomorphic in \(\tau\), that the local
+Appell--Lerch subtraction in \eqref{eq:intro-polar-subtraction-new} removes all
+principal parts, and that
+\(\widetilde{\mathcal H}^{F,\mathrm{loc}}_{d,x}\) is holomorphic and satisfies
+\eqref{eq:intro-H-untwisted-new}.
+
+Applying Lemma~\ref{lem:theta-decomposition} to the holomorphic function
+\(\widetilde{\mathcal H}^{F,\mathrm{loc}}_{d,x}\) gives the theta expansion
+\eqref{eq:intro-theta-decomp-new} and the uniqueness of the holomorphic
+coefficient functions \(h_{\ell,x}(\tau)\).
+\end{proof}
+
+
+
+\section{The first new case: \texorpdfstring{$m=2$}{m=2} and level \texorpdfstring{$5$}{5}}\label{sec:level5}
+
+We finish by recording the first genuinely higher case.  The purpose of this section is illustrative: it unwraps the finite defect and the Appell--Lerch correction in the smallest level where the higher Dyson system is not Dyson's classical rank.  Thus we set
+$m=2$, $d=5$, and $\omega=e^{2\pi i/5}$. The relevant generating series are
+\[
+G_5(x;q)=\frac{(x^5q^5;q^5)_\infty}{(xq;q)_\infty},
+\qquad
+X_j^{(2)}(x;q)=\sum_{n\geq 0}q^{n^2+jn}G_5(xq^n;q).
+\]
+
+\subsection{The root-of-unity specialization attached to \texorpdfstring{$\RRm_2(\zeta_5;q)$}{R2(zeta5;q)}}
+
+The specialization attached to \(\RRm_2(\zeta_5;q)\) is \(x=1\), since
+\[
+X_0^{(2)}(1;q)=\frac{(q^5;q^5)_\infty}{(q;q)_\infty}\RRm_2(\zeta_5;q).
+\]
+Define
+\[
+\mathcal G_{5,1}(u;q):=\sum_{j\geq 0}X_j^{(2)}(1;q)u^j
+\]
+and
+\begin{displaymath}
+\begin{split}
+R_{5,1}(u;q)
+:=
+\bigl(q^{-1}u^2-&u^3-u^2-u-1\bigr)X_0^{(2)}(1;q) \\
+&-\bigl(u^2+u\bigr)X_1^{(2)}(1;q)
+-
+\bigl(u^3+u^2\bigr)X_2^{(2)}(1;q)
+-u^3X_3^{(2)}(1;q).
+\end{split}
+\end{displaymath}
+Set
+\[
+M_5(u;q):=\frac{(u^5;q^5)_\infty}{(u;q)_\infty J(u;q)^2},
+\qquad
+K_{5,1}(u;q):=\frac{M_5(u;q)}{u}\mathcal G_{5,1}(u;q),
+\]
+and
+\[
+S_{5,1}(u;q):=(1-u)R_{5,1}(u;q)-5u^4\frac{(q^5;q^5)_\infty}{(q;q)_\infty}.
+\]
+Then Corollary~\ref{cor:torsion-slice} gives
+\[
+K_{5,1}(qu;q)-K_{5,1}(u;q)
+=
+\frac{M_5(u;q)}{u(1-u^5)}S_{5,1}(u;q),
+\]
+and the finite partial-fraction expansion
+\[
+\frac{S_{5,1}(u;q)}{u(1-u^5)}
+=
+-\frac{X_0^{(2)}(1;q)}{u}
++
+\sum_{r=0}^4\frac{D_{r,1}(q)}{1-\omega^r u},
+\qquad
+D_{r,1}(q)=\frac{\omega^r}{5}S_{5,1}(\omega^{-r};q).
+\]
+Consequently, we have
+\[
+K_{5,1}(u;q)
+=
+X_0^{(2)}(1;q)\Psi_5(u;q)-\sum_{r=0}^4D_{r,1}(q)\Omega_{5,r}(u;q),
+\]
+where
+\[
+\Psi_5(u;q):=\sum_{n\geq0}\frac{q^{-n}M_5(q^nu;q)}{u},
+\qquad
+\Omega_{5,r}(u;q):=\sum_{n\geq0}\frac{M_5(q^nu;q)}{1-\omega^rq^nu}.
+\]
+Here the defect polynomial is cubic, and the correction is supported on the five fifth-torsion orbits.
+
+For completeness, we indicate the short derivation of the formula for $R_{5,1}(u;q).$   The recurrence gives
+\[
+X_{j-2}+X_{j-1}+X_j+X_{j+1}+X_{j+2}-q^{j-1}X_j=5\frac{(q^5;q^5)_\infty}{(q;q)_\infty}.
+\]
+Taking \(j=1\) and \(j=0\) gives
+\[
+X_{-1}=5\frac{(q^5;q^5)_\infty}{(q;q)_\infty}-X_0-X_2-X_3,
+\qquad
+X_{-2}=q^{-1}X_0-X_1+X_3.
+\]
+We then substitute these two boundary values into the general boundary term in the main Theorems of Section~\ref{sec:rootofunitynot1}.
+
+The explicit Jacobi carrier in this level is
+\[
+\mathcal J_{2,5}(\tau,w)
+=
+\eta(\tau)^{-6}\frac{\vartheta_1(\tau,w)^9}{\vartheta_1(5\tau,5w)}
+=
+q^{1/4}(q;q)_\infty^{-6}u^{-2}\frac{J(u;q)^9}{J(u^5;q^5)}.
+\]
+It is a meromorphic Jacobi form of weight \(1\) and index \(2\) on \(\Gamma(600)\), with simple poles on the nonzero fifth-torsion orbits.  After the Appell--Lerch correction above and the local polar subtraction, the holomorphic finite part has the theta decomposition
+\[
+\sum_{\ell\, (\mathrm{mod}\,4)}h_{\ell,1}(\tau)\vartheta_{2,\ell}(\tau,w).
+\]
+
+\subsection{The other fifth roots of unity}
+
+Let \(x\neq1\) be a fifth root of unity.  These specializations are homogeneous torsion slices: the inhomogeneous term in the recurrence vanishes, but the residual \(x^2\)-twist remains.  In this case
+\[
+\mathcal G_{5,x}(u;q):=x^{-2}\mathcal F_{5,x}(xu;q),
+\]
+and the defect polynomial is
+\begin{displaymath}
+\begin{split}
+R_{5,x}(u;q)
+=\bigl(q^{-1}&x^{-2}u^2-u^3-u^2-u-1\bigr)X_0^{(2)}(x;q) \\
+&+\bigl(x^{-1}u^3-xu^3-xu^2-xu\bigr)X_1^{(2)}(x;q) 
+-x^2(u^3+u^2)X_2^{(2)}(x;q)-x^3u^3X_3^{(2)}(x;q).
+\end{split}
+\end{displaymath}
+Corollary~\ref{cor:torsion-slice} gives
+\[
+K_{5,x}(qu;q)-x^2K_{5,x}(u;q)
+=
+\frac{M_5(u;q)}{u(1-u^5)}(1-u)R_{5,x}(u;q),
+\]
+where \(K_{5,x}(u;q):=M_5(u;q)\mathcal G_{5,x}(u;q)/u\).  Moreover
+\[
+\frac{(1-u)R_{5,x}(u;q)}{u(1-u^5)}
+=
+-\frac{X_0^{(2)}(x;q)}{u}
++
+\sum_{r=0}^4\frac{D_{r,x}(q)}{1-\omega^ru},
+\qquad
+D_{r,x}(q)=\frac{\omega^r}{5}(1-\omega^{-r})R_{5,x}(\omega^{-r};q).
+\]
+Thus, we have
+\[
+K_{5,x}(u;q)=X_0^{(2)}(x;q)\Psi_5^{[x]}(u;q)-\sum_{r=0}^4D_{r,x}(q)\Omega_{5,r}^{[x]}(u;q),
+\]
+with
+\[
+\Psi_5^{[x]}(u;q):=\sum_{n\geq0}x^{-2n-2}\frac{q^{-n}M_5(q^nu;q)}{u},
+\qquad
+\Omega_{5,r}^{[x]}(u;q):=\sum_{n\geq0}x^{-2n-2}\frac{M_5(q^nu;q)}{1-\omega^rq^nu}.
+\]
+The same five torsion orbits support the possible poles, and the nonzero fifth-torsion divisor is again carried by \(\mathcal J_{2,5}\).  After translating away the constant twist and subtracting local Appell--Lerch principal parts, the finite part again decomposes into the four index--\(2\) theta functions \(\vartheta_{2,\ell}\).
+
+
+\appendix
+
+\section{Combinatorial interpretation of the higher Dyson series}\label{app:combinatorics}
+
+The main body of the paper uses the analytic family \(X_j^{(m)}(x;q)\).
+This appendix records the combinatorial source of the higher Dyson series
+and proves the root-of-unity collapse used in the introduction.
+
+We begin by recalling
+\[
+\mathcal{R}_m(x_1,\dots,x_m;q):=\sum_{n\ge 0}\frac{q^{n^2}}{\prod_{j=1}^m (x_jq,q/x_j;q)_n},
+\]
+and its one-parameter specialization
+\[
+\mathcal{R}_m(z;q):=\mathcal{R}_m(z,z^2,\dots,z^m;q)=\sum_{n\ge 0}\frac{q^{n^2}}{\prod_{j=1}^m (z^jq,z^{-j}q;q)_n}.
+\]
+For $m=1$ this is Dyson's rank generating function.
+
+We now define $m$-fold Dyson symbols, the combinatorial statistic whose generating series is given by $\mathcal{R}_m(z;q)$. 
+
+\begin{definition}
+An \emph{uncoupled $m$-Dyson symbol} is given by data
+\[
+\Sigma=(n;\alpha_1,\beta_1,\dots,\alpha_m,\beta_m),
+\]
+where $n\ge 0$ and, for each $j$, the partitions $\alpha_j$ and $\beta_j$ have largest part at most $n$. We define the \emph{size} and \emph{full rank of $\Sigma$} by
+\[
+|\Sigma|:=n^2+\sum_{j=1}^m\bigl(|\alpha_j|+|\beta_j|\bigr),
+\]
+\[
+\operatorname{FR}_m(\Sigma):=\sum_{j=1}^m j\bigl(\ell(\alpha_j)-\ell(\beta_j)\bigr).
+\]
+Here, $\ell(\lambda)$ denotes the length of the partition $\lambda$, i.e.\@ the number of its parts. 
+\end{definition}
+
+\begin{example}
+We construct an \emph{uncoupled $2$-Dyson symbol}.
+Choose $n=3$. We choose
+\[
+\alpha_1 =(3,1),\, \beta_1=(2,2),\, \alpha_2=(1),\,\beta_2=\emptyset.
+\]
+This yields
+\[
+|\alpha_1| = 4, \, \ell(\alpha_1) = 2, \quad |\beta_1| = 4, \, \ell(\beta_1) = 2, \quad |\alpha_2| = 1, \, \ell(\alpha_2) = 1, \quad |\beta_2| = 0, \, \ell(\beta_2) = 0.
+\]
+The uncoupled $2$-Dyson symbol is represented by 
+\[
+\Sigma = \bigl(3; (3,1), (2,2), (1), \emptyset\bigr).
+\]
+Moreover, 
+\begin{align*}
+|\Sigma| &:= n^2 + \sum_{j=1}^2 \bigl(|\alpha_j| + |\beta_j|\bigr) =28, \quad \operatorname{FR}_2(\Sigma) := \sum_{j=1}^2 j\bigl(\ell(\alpha_j) - \ell(\beta_j)\bigr) =2.
+\end{align*}
+\end{example}
+
+We now show that $\mathcal{R}_m(z;q)$ is the generating series of uncoupled $m$-Dyson symbols.
+\begin{theorem}\label{thm:combinatorialgenseries}
+We have
+\[
+\mathcal{R}_m(z;q)=\sum_{\Sigma} z^{\operatorname{FR}_m(\Sigma)}q^{|\Sigma|},
+\]
+where the sum runs over all uncoupled $m$-Dyson symbols. Equivalently,
+\[
+\mathcal{R}_m(z;q)=\sum_{N\ge 0}\sum_{r\in\ZZ} N_m(r,N)z^rq^N,
+\]
+where $N_m(r,N)$ counts uncoupled $m$-Dyson symbols of size $N$ and full rank $r$. In particular,
+\[
+N_m(r,N)=N_m(-r,N).
+\]
+\end{theorem}
+\begin{proof}
+Fix $n\ge 0$. For each $j$,
+\[
+\frac{1}{(z^jq;q)_n}=\sum_{\alpha_j} z^{j\ell(\alpha_j)}q^{|\alpha_j|},
+\qquad
+\frac{1}{(z^{-j}q;q)_n}=\sum_{\beta_j} z^{-j\ell(\beta_j)}q^{|\beta_j|},
+\]
+where $\alpha_j$ and $\beta_j$ run over partitions whose largest parts are at most $n$. Multiplying these identities for $j=1,\dots,m$ and then multiplying by $q^{n^2}$ yields
+\[
+\frac{q^{n^2}}{\prod_{j=1}^m (z^jq,z^{-j}q;q)_n}
+=
+\sum_{\alpha_1,\beta_1,\dots,\alpha_m,\beta_m}
+ z^{\sum_{j=1}^m j(\ell(\alpha_j)-\ell(\beta_j))}
+ q^{n^2+\sum_{j=1}^m(|\alpha_j|+|\beta_j|)}.
+\]
+Summing over $n\ge 0$ gives the result.
+
+The involution
+\[
+(n;\alpha_1,\beta_1,\dots,\alpha_m,\beta_m)
+\longmapsto
+(n;\beta_1,\alpha_1,\dots,\beta_m,\alpha_m)
+\]
+preserves the size and negates the full rank. This yields for every $m\ge 1$, every $r\in\ZZ$, and every $N\ge 0$,
+\[
+N_m(r,N)=N_m(-r,N).
+\]
+\end{proof}
+
+
+For an indeterminate $x$, we let $\Theta(x;q):=(xq,q/x;q)_\infty$.
+For $s\in\ZZ_{\ge 0}$ and $n\ge 0$, we define
+\[
+A_s(x;n):=(xq^{n+1+s},q^{n+1}/x;q)_\infty.
+\]
+If $\mathbf s=(s_1,\dots,s_m)\in\ZZ_{\ge 0}^m$, let
+$
+|\mathbf s|:=s_1+\cdots+s_m,
+$
+and set
+\[
+\FF_m^{\mathbf s}(x_1,\dots,x_m;q):=\sum_{n\ge 0} q^{n^2+|\mathbf s|n}\prod_{j=1}^m A_{s_j}(x_j;n).
+\]
+Furthermore, we let \(e_i\) denote the \(i\)-th standard basis vector of \(\mathbb Z^m\).
+
+
+\begin{theorem}
+  We have
+\[
+\Bigl(\prod_{j=1}^m \Theta(x_j;q)\Bigr)\mathcal{R}_m(x_1,\dots,x_m;q)=\FF_m^{\mathbf 0}(x_1,\dots,x_m;q),
+\]
+and for $1\le i\le m$ and every $\mathbf s\in\ZZ_{\ge 0}^m$,
+\[
+\begin{aligned}
+\FF_m^{\mathbf s}(x_1,\dots,qx_i,\dots,x_m;q)&-\FF_m^{\mathbf s}(x_1,\dots,x_i,\dots,x_m;q) \\
+&=\bigl(q^{s_i+1}x_i-x_i^{-1}\bigr)\FF_m^{\mathbf s+\mathbf e_i}(x_1,\dots,x_m;q).
+\end{aligned}
+\]
+\end{theorem}
+\begin{proof}
+      For each fixed $j$ and each $n\ge 0$, we have
+\[
+\frac{\Theta(x_j;q)}{(x_jq,q/x_j;q)_n}
+=
+\frac{(x_jq,q/x_j;q)_\infty}{(x_jq,q/x_j;q)_n}
+=(x_jq^{n+1},q^{n+1}/x_j;q)_\infty
+=A_0(x_j;n).
+\]
+Multiplying over $j=1,\dots,m$ and summing over $n\ge 0$ gives for every $m\ge 1$,
+\[
+\Bigl(\prod_{j=1}^m \Theta(x_j;q)\Bigr)\mathcal{R}_m(x_1,\dots,x_m;q)=\FF_m^{\mathbf 0}(x_1,\dots,x_m;q).
+\]
+Moreover, we have
+\[
+A_s(qx;n)=(1-q^n/x)(xq^{n+2+s},q^{n+1}/x;q)_\infty,
+\]
+\[
+A_s(x;n)=(1-xq^{n+1+s})(xq^{n+2+s},q^{n+1}/x;q)_\infty.
+\]
+Subtracting gives
+\[
+A_s(qx;n)-A_s(x;n)=q^n\bigl(q^{s+1}x-x^{-1}\bigr)A_{s+1}(x;n).
+\]
+We apply this to the $i$th factor in the definition of $\FF_m^{\mathbf s}$ and obtain
+\begin{align*}
+\FF_m^{\mathbf s}&(x_1,\dots,qx_i,\dots,x_m;q)-\FF_m^{\mathbf s}(x_1,\dots,x_i,\dots,x_m;q)
+\\
+&=\sum_{n\ge 0} q^{n^2+|\mathbf s|n}
+\Bigl(\prod_{j\neq i}A_{s_j}(x_j;n)\Bigr)
+q^n\bigl(q^{s_i+1}x_i-x_i^{-1}\bigr)A_{s_i+1}(x_i;n).
+\end{align*}
+We factor out $q^{s_i+1}x_i-x_i^{-1}$. Since $|\mathbf s+\mathbf e_i|=|\mathbf s|+1$, the remaining sum is precisely
+\[
+\FF_m^{\mathbf s+\mathbf e_i}(x_1,\dots,x_m;q),
+\]
+which implies the result.
+\end{proof}
+
+Before stating the next theorem, we recall our notation for Gaussian coefficients. For integers
+\(A\) and \(B\), define
+\[
+\begin{bmatrix} A \\ B \end{bmatrix}_q
+:=
+\begin{cases}
+\dfrac{(q;q)_A}{(q;q)_B(q;q)_{A-B}}, & 0 \leq B \leq A,\\[1.2em]
+0, & \text{otherwise}.
+\end{cases}
+\]
+Thus the finite \(q\)-binomial theorem gives, for \(n\geq 1\),
+\[
+\frac{1}{(xq;q)_n}
+=
+\sum_{a\geq 0}
+\begin{bmatrix} n+a-1 \\ a \end{bmatrix}_q
+x^a q^a.
+\]
+This is the convention used in Theorem~A.4.
+
+\begin{theorem}
+    For each $n\ge 0$, define coefficients $C_n(k;q)$ by
+\[
+\frac{1}{(xq,q/x;q)_n}=\sum_{k\in\ZZ} C_n(k;q)x^k.
+\]
+For $n=0$ one has $C_0(0;q)=1$ and $C_0(k;q)=0$ for $k\neq 0$.  For every $n\ge 1$ and every $k\ge 0$, and for $|q|<|x|<|q|^{-1}$,
+\[
+C_n(k;q)=\sum_{v\ge 0}
+\qbinom{n+k+v-1}{k+v}
+\qbinom{n+v-1}{v}
+q^{k+2v},
+\qquad
+C_n(-k;q)=C_n(k;q),
+\]
+and
+\[
+\mathcal{R}_m(z;q)
+=
+\sum_{n\ge 0} q^{n^2}
+\sum_{\mathbf k\in\ZZ^m}
+\Bigl(\prod_{j=1}^m C_n(k_j;q)\Bigr)
+ z^{k_1+2k_2+\cdots+mk_m}.
+\]
+\end{theorem}
+\begin{proof}
+    For $n=0$ the definition gives
+$
+\frac{1}{(xq,q/x;q)_0}=1,
+$
+so $C_0(0;q)=1$ and $C_0(k;q)=0$ for $k\neq 0$.  Now assume $n\ge 1$.  By the finite $q$-binomial theorem,
+\[
+\frac{1}{(xq;q)_n}=\sum_{a\ge 0}\qbinom{n+a-1}{a}x^a q^a,
+\qquad
+\frac{1}{(q/x;q)_n}=\sum_{b\ge 0}\qbinom{n+b-1}{b}x^{-b} q^b.
+\]
+Multiplying gives
+\[
+\frac{1}{(xq,q/x;q)_n}
+=
+\sum_{a,b\ge 0}
+\qbinom{n+a-1}{a}
+\qbinom{n+b-1}{b}
+ x^{a-b} q^{a+b}.
+\]
+For $k\ge 0$, the coefficient of $x^k$ comes from $a=b+k$. Writing $v:=b$, we obtain 
+\[
+C_n(k;q)=\sum_{v\ge 0}
+\qbinom{n+k+v-1}{k+v}
+\qbinom{n+v-1}{v}
+q^{k+2v},
+\]
+The symmetry $C_n(-k;q)=C_n(k;q)$ is immediate by interchanging $a$ and $b$.
+Now, for each fixed $n$ and $j$,
+\[
+\frac{1}{(z^jq,z^{-j}q;q)_n}=\sum_{k_j\in\ZZ} C_n(k_j;q)z^{jk_j}.
+\]
+Multiplying over $j=1,\dots,m$, then multiplying by $q^{n^2}$, then summing over $n\ge 0$, gives the desired expansion.
+\end{proof}
+
+
+For $N\ge 0$ and $a\in\ZZ/d\ZZ$, let $N_m(a,d;N)$ denote the number of uncoupled $m$-Dyson symbols of size $N$ whose full rank is congruent to $a\pmod d$.
+
+
+\begin{theorem}\label{thm:appendixcongruence}
+Fix $m\ge 1$.
+If $d=2m+1$ is prime, then for every $N\ge 0$ one has
+\[
+N_m(1,d;N)=N_m(2,d;N)=\cdots=N_m(d-1,d;N).
+\]
+Equivalently, there exist integers $A_m(N)$ and $B_m(N)$ such that
+\[
+N_m(0,d;N)=A_m(N),
+\qquad
+N_m(a,d;N)=B_m(N)\quad (a=1,\dots,d-1),
+\]
+and hence 
+\[
+[q^N]\mathcal{R}_m(\zeta_d;q)=A_m(N)-B_m(N),
+\]
+where $[q^N]$ is the operator that extracts the $N$-th coefficient.
+\end{theorem}
+
+\begin{proof}
+Fix $N \ge 0$ and define $F_N(X) := \sum_{a=0}^{d-1} N_m(a,d;N) X^a \in \mathbb{Z}[X]$. By definition, $[q^N]\mathcal{R}_m(\zeta_d^r;q) = F_N(\zeta_d^r)$. Since $\mathcal{R}_m(\zeta_d^r;q)$ is invariant for all $r \in (\mathbb{Z}/d\mathbb{Z})^\times$, the value $F_N(\zeta_d)$ is fixed by the Galois group $\text{Gal}(\mathbb{Q}(\zeta_d)/\mathbb{Q})$. Thus, $F_N(\zeta_d) = \delta_N$ for some $\delta_N \in \mathbb{Z}$.
+
+The polynomial $G_N(X) := F_N(X) - \delta_N$ vanishes at all primitive $d$-th roots of unity, and is therefore divisible by the cyclotomic polynomial $\Phi_d(X)$. Since $d$ is prime, $\Phi_d(X) = \sum_{a=0}^{d-1} X^a$. Because $\deg(G_N) \le d-1$ and $\deg(\Phi_d) = d-1$, there must exist a constant $c_N \in \mathbb{Z}$ such that
+\[
+F_N(X) - \delta_N = c_N \Phi_d(X) = c_N \sum_{a=0}^{d-1} X^a.
+\]
+Comparing coefficients of $X^a$ yields
+\begin{align*}
+N_m(0,d;N) - \delta_N &= c_N, \\
+N_m(a,d;N) &= c_N \quad (1 \le a \le d-1).
+\end{align*}
+Setting $B_m(N) := c_N$ and $A_m(N) := \delta_N + c_N$, we obtain $N_m(a,d;N) = B_m(N)$ for $a \ne 0$ and $N_m(0,d;N) = A_m(N)$. Finally, the specialized coefficient is given by
+\[
+[q^N]\mathcal{R}_m(\zeta_d;q) = \delta_N = A_m(N) - B_m(N),
+\]
+completing the proof.
+\end{proof}
+
+
+\begin{corollary}\label{cor:recover}
+Let
+\[
+U_m(q):=\RRm_m(1;q)=\sum_{n\ge 0}\frac{q^{n^2}}{(q;q)_n^{2m}}=\sum_{N\ge 0}U_m(N)q^N.
+\]
+If $d=2m+1$ is prime and
+\[
+D_m(N):=[q^N]\RRm_m(\zeta_d;q),
+\]
+then
+\[
+A_m(N)=\frac{U_m(N)+(d-1)D_m(N)}{d},
+\qquad
+B_m(N)=\frac{U_m(N)-D_m(N)}{d}.
+\]
+\end{corollary}
+
+\begin{proof}
+The total number of uncoupled $m$-Dyson symbols of size $N$ is
+\[
+U_m(N)=A_m(N)+(d-1)B_m(N),
+\]
+while Theorem~\ref{thm:appendixcongruence} gives
+\[
+D_m(N)=A_m(N)-B_m(N).
+\]
+Solving this $2\times 2$ linear system gives the result.
+\end{proof}
+
+
+
+\begin{thebibliography}{99}
+
+\bibitem{AtkinSwinnertonDyer}
+A.~O.~L. Atkin and P. Swinnerton-Dyer,
+\emph{Some properties of partitions},
+Proc. London Math. Soc. (3) \textbf{4} (1954), 84--106.
+
+\bibitem{BFOR}
+K. Bringmann, A. Folsom, K. Ono, and L. Rolen,
+\emph{Harmonic Maass Forms and Mock Modular Forms: Theory and Applications},
+American Mathematical Society Colloquium Publications, vol.~64,
+American Mathematical Society, Providence, RI, 2017.
+
+\bibitem{BringmannOnoInvent}
+K.~Bringmann and K.~Ono,
+\emph{The $f(q)$ mock theta function conjecture and partition ranks},
+Invent. Math. \textbf{165} (2006), no.~2, 243--266.
+
+\bibitem{BringmannOno}
+K. Bringmann and K. Ono,
+\emph{Dyson's ranks and Maass forms},
+Ann.\ of Math. (2) \textbf{171} (2010), no.~1, 419--449.
+
+\bibitem{BruinierFunke}
+J.~H.~Bruinier and J.~Funke,
+\emph{On two geometric theta lifts}, Duke Math. J. \textbf{125} (2004), no.~1, 45--90.
+
+\bibitem{DabholkarMurthyZagier}
+A. Dabholkar, S. Murthy, and D. Zagier,
+\emph{Quantum black holes, wall crossing, and mock modular forms},
+Cambridge Monographs on Mathematical Physics, Cambridge University Press, Cambridge, 2024.
+
+\bibitem{Dyson}
+F.~J. Dyson,
+\emph{Some guesses in the theory of partitions},
+Eureka (Cambridge) \textbf{8} (1944), 10--15.
+
+\bibitem{EichlerZagier}
+M. Eichler and D. Zagier,
+\emph{The Theory of Jacobi Forms},
+Progress in Mathematics, vol.~55, Birkh\"auser, Boston, 1985.
+
+\bibitem{FolsomOnoRhoades}
+A.~Folsom, K.~Ono, and R.~Rhoades,
+\emph{Mock theta functions and quantum modular forms},
+Forum Math. Pi \textbf{1} (2013), e2.
+
+
+\bibitem{OnoVisions}
+K. Ono,
+Unearthing the visions of a master: harmonic Maass forms and number theory,
+in \emph{Current Developments in Mathematics, 2008},
+International Press, Somerville, MA, 2009, pp.~347--454.
+
+\bibitem{ZagierBourbaki}
+D. Zagier,
+Ramanujan's mock theta functions and their applications
+[d'apr\`es Zwegers and Ono--Bringmann],
+in \emph{S\'eminaire Bourbaki, Volume 2007/2008, Expos\'es 982--996},
+Ast\'erisque, no.~326, Soci\'et\'e Math\'ematique de France, Paris, 2009,
+Exp.~No.~986, pp.~143--164.
+
+
+
+\bibitem{ZwegersThesis}
+S.~P. Zwegers,
+\emph{Mock Theta Functions},
+Ph.D. thesis, Universiteit Utrecht, 2002.
+
+\end{thebibliography}
+
+\end{document}
