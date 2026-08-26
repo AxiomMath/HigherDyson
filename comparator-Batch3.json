@@ -1,0 +1,27 @@
+{
+  "challenge_module": "Batch3.Output.problem",
+  "solution_module": "Batch3.Output.solution",
+  "theorem_names": [
+    "HigherDyson.stmt1_i",
+    "HigherDyson.stmt1_ii",
+    "HigherDyson.stmt2_a",
+    "HigherDyson.stmt2_b_left",
+    "HigherDyson.stmt2_b_right",
+    "HigherDyson.stmt3_i",
+    "HigherDyson.stmt3_ii",
+    "HigherDyson.stmt4_i",
+    "HigherDyson.stmt4_ii",
+    "HigherDyson.stmt5_i",
+    "HigherDyson.stmt5_ii",
+    "HigherDyson.stmt5_iii",
+    "HigherDyson.stmt6_a",
+    "HigherDyson.stmt6_b",
+    "HigherDyson.stmt6_c"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

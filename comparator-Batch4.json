@@ -1,0 +1,15 @@
+{
+  "challenge_module": "Batch4.Output.problem",
+  "solution_module": "Batch4.Output.solution",
+  "theorem_names": [
+    "AppellKernelShift.thm_Bshift",
+    "AppellKernelShift.thm_Arshift",
+    "AppellKernelShift.thm_Aextshift"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}
