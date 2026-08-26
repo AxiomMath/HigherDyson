@@ -29,7 +29,10 @@ The formal proofs provided in this work were developed and verified using **Lean
 This repository can be verified against the formal problem statement with the Lean comparator on a Linux machine. First, follow the instructions in [https://github.com/leanprover/comparator](https://github.com/leanprover/comparator) to install comparator. Then, run the following command:
 
 ```
-lake env comparator comparator.json
+lake env comparator comparator-Batch1.json
+lake env comparator comparator-Batch2.json
+lake env comparator comparator-Batch3.json
+lake env comparator comparator-Batch4.json
 ```
 
 ## License
