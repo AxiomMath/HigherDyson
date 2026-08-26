@@ -24,6 +24,17 @@ The formal proofs provided in this work were developed and verified using **Lean
 - [`Batch4/Output/problem.lean`](Batch4/Output/problem.lean): translation of the problem statement into formal language (Lean)
 - [`Batch4/Output/solution.lean`](Batch4/Output/solution.lean): solution in formal language (Lean)
 
+## Verifying with Comparator
+
+This repository can be verified against the formal problem statement with the Lean comparator on a Linux machine. First, follow the instructions in [https://github.com/leanprover/comparator](https://github.com/leanprover/comparator) to install comparator. Then, run the following command:
+
+```
+lake env comparator comparator-Batch1.json
+lake env comparator comparator-Batch2.json
+lake env comparator comparator-Batch3.json
+lake env comparator comparator-Batch4.json
+```
+
 ## License
 
 This repository uses the MIT License. See [LICENSE](LICENSE) for details.

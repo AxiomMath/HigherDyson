@@ -1,0 +1,27 @@
+{
+  "challenge_module": "Batch2.Output.problem",
+  "solution_module": "Batch2.Output.solution",
+  "theorem_names": [
+    "Tpoly_natDegree_le",
+    "Tpoly_coeff_zero",
+    "Cx_one",
+    "Cx_torsion_ne",
+    "Tpoly_factor_one",
+    "Tpoly_factor_torsion_ne",
+    "Spoly_one_coeff_zero",
+    "Spoly_tors_coeff_zero",
+    "KF_defect",
+    "KF_residues_general",
+    "KF_residues_torsion_one",
+    "KF_residues_torsion_ne",
+    "KF_kernelshift_general",
+    "KF_kernelshift_torsion_one",
+    "KF_kernelshift_torsion_ne"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

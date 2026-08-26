@@ -1,0 +1,21 @@
+{
+  "challenge_module": "Batch1.Output.problem",
+  "solution_module": "Batch1.Output.solution",
+  "theorem_names": [
+    "KF_collapse",
+    "exponent_identity",
+    "KF_recurrence",
+    "KF_boundary",
+    "rational_reduction_one",
+    "rational_reduction_two",
+    "KF_functional",
+    "KF_combi_iff",
+    "KF_combi_unique"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}
